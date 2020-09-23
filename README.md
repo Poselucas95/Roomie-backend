@@ -1,28 +1,4 @@
-<div align="center" id="top"> 
-  <img src="./.github/app.gif" alt="Roomie Backend" />
-
-  &#xa0;
-
-  <!-- <a href="https://roomiebackend.netlify.app">Demo</a> -->
-</div>
-
 <h1 align="center">Roomie Backend</h1>
-
-<p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/{{YOUR_GITHUB_USERNAME}}/roomie-backend?color=56BEB8">
-
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/{{YOUR_GITHUB_USERNAME}}/roomie-backend?color=56BEB8">
-
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/{{YOUR_GITHUB_USERNAME}}/roomie-backend?color=56BEB8">
-
-  <img alt="License" src="https://img.shields.io/github/license/{{YOUR_GITHUB_USERNAME}}/roomie-backend?color=56BEB8">
-
-  <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/{{YOUR_GITHUB_USERNAME}}/roomie-backend?color=56BEB8" /> -->
-
-  <!-- <img alt="Github forks" src="https://img.shields.io/github/forks/{{YOUR_GITHUB_USERNAME}}/roomie-backend?color=56BEB8" /> -->
-
-  <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/{{YOUR_GITHUB_USERNAME}}/roomie-backend?color=56BEB8" /> -->
-</p>
 
 <!-- Status -->
 
@@ -46,7 +22,7 @@
 
 ## :dart: About ##
 
-Describe your project
+Es una app android con orientación social que permite la publicación de perfiles, generación de comunidad y oferta de habitaciones en domicilios particulares en alquiler por periodos de mediano y largo plazo.
 
 ## :sparkles: Features ##
 
@@ -62,7 +38,6 @@ The following tools were used in this project:
 - [Node.js](https://nodejs.org/en/)
 - [React](https://pt-br.reactjs.org/)
 - [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
 
 ## :white_check_mark: Requirements ##
 
@@ -88,7 +63,7 @@ $ npm run start
 
 ## :memo: License ##
 
-This project is under license from Roomie Team. For more details, see the [LICENSE](LICENSE.md) file.
+This project is under license from Roomie Team.
 
 
 Made with :heart:
