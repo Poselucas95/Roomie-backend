@@ -34,7 +34,7 @@ Es una app android con orientación social que permite la publicación de perfil
 
 The following tools were used in this project:
 
-- [Expo](https://expo.io/)
+- [ExpressJs](https://expressjs.com/es/)
 - [Node.js](https://nodejs.org/en/)
 - [React](https://pt-br.reactjs.org/)
 - [React Native](https://reactnative.dev/)
