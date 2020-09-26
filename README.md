@@ -36,8 +36,7 @@ The following tools were used in this project:
 
 - [ExpressJs](https://expressjs.com/es/)
 - [Node.js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
-- [React Native](https://reactnative.dev/)
+- [Firebase](https://firebase.google.com/?hl=es)
 
 ## :white_check_mark: Requirements ##
 
@@ -51,12 +50,14 @@ $ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/roomie-backend
 
 # Access
 $ cd roomie-backend
+$ cd functions
 
 # Install dependencies
 $ npm install
 
-# Run the project
-$ npm run start
+# Run the project locally
+$ cd ..
+$ firebase serve
 
 # The server will initialize in the <http://localhost:3000>
 ```
