@@ -1,9 +1,11 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-eq-null */
 var express = require('express');
 var router = express.Router();
 var userController = require('../src/controllers/userController')
 
 /* GET user. */
-router.get('/:userId', async function(req, res, next) {
+router.get('/:userId', async (req, res) => {
   if(req.params.userId && req.params.userId == null) res.status(400).send('Error al solicitar el user. Falta userID')
   try{
     var response = await userController.getUser(req.params.userId)

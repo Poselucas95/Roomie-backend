@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-eq-null */
 const validator = require('validator').default;
 const userService = require('../services/userService')
 
@@ -5,7 +7,7 @@ const userService = require('../services/userService')
 async function getUser(userId) {
     try{
         user = await userService.getUser(userId)
-        if(user == null) return { 'result': 'No se encuentra el usuario', 'code': 404}
+        if(user == null) return { 'result': {}, 'code': 404}
         return { 'result': user, 'code': 200}
     }catch(error){
         console.dir(error)
