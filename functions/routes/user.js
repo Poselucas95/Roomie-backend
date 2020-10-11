@@ -13,6 +13,6 @@ router.post('/register', async function(req, res, next) {
   }
 });
 
-
+router.get('/user')
 
 module.exports = router;
