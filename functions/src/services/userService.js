@@ -1,3 +1,4 @@
+/* eslint-disable promise/always-return */
 const sql = require('../database/sql')
 const mssql = require( "mssql" );
 

@@ -12,9 +12,7 @@ async function getUser(userId) {
         return { 'result': 'Se produjo un error al buscar el usuario', 'code': 500}
     }
 
+    
 }
-
-
-
 
 module.exports = {getUser}
