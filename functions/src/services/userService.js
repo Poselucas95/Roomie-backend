@@ -1,8 +1,29 @@
+/* eslint-disable consistent-return */
+/* eslint-disable promise/always-return */
 const sql = require('../database/sql')
 const mssql = require( "mssql" );
 
+async function getUser(userId) {
+    let result;
+    const client = await sql.getConnection()
+    try{
+        let queryPrepared = await client.request()
+        // Parametros a insertar
+        queryPrepared.input('userId', mssql.NVarChar, userId)
+        // Ejecución de la query
+        await queryPrepared.query('SELECT * FROM Perfil WHERE IdFirebase = @userId').then((response) => {
+            result = response.recordset
+        })
+        // Cerramos la conexión
+        await client.close()
+        console.dir(result)
+        return result[0]
+    }catch (err){
+        console.dir(err)
+    }
+}
 
-async function setNewUser(email) {
+async function createUser(data) {
     let result;
     const client = await sql.getConnection()
     try{
@@ -15,7 +36,6 @@ async function setNewUser(email) {
         })
         // Cerramos la conexión
         await client.close()
-        
         return result
     }catch (err){
         console.dir(err)
@@ -23,25 +43,7 @@ async function setNewUser(email) {
 }
 
 
-async function getUser(email) {
-    let result;
-    const client = await sql.getConnection()
-    try{
-        let queryPrepared = await client.request()
-        // Parametros a insertar
-        queryPrepared.input('email', mssql.NVarChar, email)
-        // Ejecución de la query
-        await queryPrepared.query('SELECT * FROM usuarios WHERE usuarios.email = @email').then((response) => {
-            result = response.recordset
-        })
-        // Cerramos la conexión
-        await client.close()
-        
-        return result[0]
-    }catch (err){
-        console.dir(err)
-    }
-}
 
 
-module.exports = {setNewUser, getUser}
+
+module.exports = {createUser, getUser}

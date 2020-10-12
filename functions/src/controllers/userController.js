@@ -1,21 +1,23 @@
-const validator = require('validator');
+/* eslint-disable eqeqeq */
+/* eslint-disable no-eq-null */
+const validator = require('validator').default;
 const userService = require('../services/userService')
 
-async function register(email) {
-    // Chequeamos que el email sea valido
-    if(!validator.isEmail(email)) return { 'result': 'El email no es valido', 'code': 400}
-    // Chequeamos si el email ya se encuentra registrado
-    user = await userService.getUser(email)
-    if(user != null) return { 'result': 'El email ya se encuentra registrado', 'code': 409}
 
+async function getUser(userId) {
     try{
-        result = await userService.setNewUser(email)
-        return { 'result': "Se ha registrado el email correctamente", 'code': 200}
+        user = await userService.getUser(userId)
+        if(user == null) return { 'result': {}, 'code': 404}
+        return { 'result': user, 'code': 200}
     }catch(error){
         console.dir(error)
-        return { 'result': 'Se produjo un error al registrar el email', 'code': 500}
+        return { 'result': 'Se produjo un error al buscar el usuario', 'code': 500}
     }
+
+
 }
 
 
-module.exports = {register}
+
+
+module.exports = {getUser}
