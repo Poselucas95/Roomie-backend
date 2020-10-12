@@ -16,6 +16,14 @@ router.get('/:userId', async (req, res) => {
 });
 
 /* CREATE user. */
+router.post('/', async (req, res) => {
+  try{
+    var response = await userController.createUser(req.body)
+    res.status(response.code).send(response.result)
+  }catch (err){
+    res.send("Error al registrar el usuario", 500)
+  }
+});
 
 
 module.exports = router;

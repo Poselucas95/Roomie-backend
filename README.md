@@ -84,15 +84,15 @@ Made with :heart:
 ###### Response:
  ```javascript
 {
-  "idFirebase": "",
-  "Nombre": "",
-  "Apellido": "",
-  "Edad": 0,
-  "Dni": "",
-  "Mail": "",
-  "Apodo": "",
-  "Genero": "1/0",
-  "Dedicacion": "1/0",
+  "userId": "",
+  "nombre": "",
+  "apellido": "",
+  "edad": 0,
+  "dni": "",
+  "email": "",
+  "apodo": "",
+  "genero": "1/0",
+  "dedicacion": "1/0",
   "personalidad": {
       "activo": "1/0",
       "colaborador": "1/0",
@@ -133,11 +133,11 @@ Made with :heart:
       "romanticas": "1/0",
       "cienciaFiccion": "1/0"
   },
-  "Instagram": "",
-  "Twitter": "",
-  "LinkedIn": "",
-  "Facebook": "",
-  "Descripcion": ""
+  "instagram": "",
+  "twitter": "",
+  "rock": "",
+  "facebook": "",
+  "descripcion": ""
 }
 ```
 
@@ -145,15 +145,15 @@ Made with :heart:
 ###### Body:
  ```javascript
 {
-  "idFirebase": "",
-  "Nombre": "",
-  "Apellido": "",
-  "Edad": 0,
-  "Dni": "",
-  "Mail": "",
-  "Apodo": "",
-  "Genero": "1/0",
-  "Dedicacion": "1/0",
+  "userId": "",
+  "nombre": "",
+  "apellido": "",
+  "edad": 0,
+  "dni": "",
+  "email": "",
+  "apodo": "",
+  "genero": "1/0",
+  "dedicacion": "1/0",
   "personalidad": {
       "activo": "1/0",
       "colaborador": "1/0",
@@ -194,11 +194,11 @@ Made with :heart:
       "romanticas": "1/0",
       "cienciaFiccion": "1/0"
   },
-  "Instagram": "",
-  "Twitter": "",
-  "LinkedIn": "",
-  "Facebook": "",
-  "Descripcion": ""
+  "instagram": "",
+  "twitter": "",
+  "rock": "",
+  "facebook": "",
+  "descripcion": ""
 }
 ```
 
