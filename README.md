@@ -70,8 +70,7 @@ This project is under license from Roomie Team.
 Made with :heart:
 
 
-# Usage
-Different operations are performed through the following endpoints:
+# Uso
 
  Endpoint                                                            | Metodo | Descripción                                           
  ------------------------------------------------------------------- | ------ | ----------------------------------------------------- 
@@ -79,7 +78,7 @@ Different operations are performed through the following endpoints:
 [`/api/user/`](#crear-usuario)                                       | POST   | Registra un nuevo usuario
 
 
-## Examples
+## Ejemplos
 ### Buscar Usuario
 
 ###### Response:
