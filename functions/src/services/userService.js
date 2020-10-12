@@ -1,9 +1,10 @@
+/* eslint-disable consistent-return */
 /* eslint-disable promise/always-return */
 const sql = require('../database/sql')
 const mssql = require( "mssql" );
 
-let result;
-    async function getUser(userId) {
+async function getUser(userId) {
+    let result;
     const client = await sql.getConnection()
     try{
         let queryPrepared = await client.request()
@@ -15,14 +16,14 @@ let result;
         })
         // Cerramos la conexión
         await client.close()
-        
+        console.dir(result)
         return result[0]
     }catch (err){
         console.dir(err)
     }
 }
 
-async function createUser(userId) {
+async function createUser(data) {
     let result;
     const client = await sql.getConnection()
     try{
@@ -35,7 +36,6 @@ async function createUser(userId) {
         })
         // Cerramos la conexión
         await client.close()
-        
         return result
     }catch (err){
         console.dir(err)
@@ -46,4 +46,4 @@ async function createUser(userId) {
 
 
 
-module.exports = {setNewUser, getUser}
+module.exports = {createUser, getUser}
