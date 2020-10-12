@@ -15,6 +15,7 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
+/* CREATE user. */
 
 
 module.exports = router;
