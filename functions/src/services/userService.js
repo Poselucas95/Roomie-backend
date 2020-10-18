@@ -37,7 +37,7 @@ const getParams = (body) => {
         { name: 'Running', sqltype: mssql.Bit,  value: body.deporte.running || false},
         { name: 'Tennis', sqltype: mssql.Bit,  value: body.deporte.tennis || false},
         { name: 'Baloncesto', sqltype: mssql.Bit,  value: body.deporte.baloncesto || false},
-        { name: 'Futbol', sqltype: mssql.Bit,  value: body.deporte.futboll || false},
+        { name: 'Futbol', sqltype: mssql.Bit,  value: body.deporte.futbol || false},
         { name: 'Accion', sqltype: mssql.Bit,  value: body.peliculas.accion || false},
         { name: 'Animacion', sqltype: mssql.Bit,  value: body.peliculas.animacion},
         { name: 'Comedia', sqltype: mssql.Bit,  value: body.peliculas.comedia || false},
@@ -66,7 +66,7 @@ async function getUser(userId) {
         // Cerramos la conexión
         await client.close()
         console.dir(result)
-        return result[0]
+        return formatUser(result[0])
     }catch (err){
         console.dir(err)
     }
@@ -112,6 +112,65 @@ async function updateUser(body) {
     }catch (err){
         console.dir(err)
     }
+}
+
+
+const formatUser = (user) => {
+    return { "userId": user.IdFirebase,
+            "nombre": user.Nombre,
+            "apellido": user.Apellido,
+            "edad": user.Edad,
+            "dni": user.Dni,
+            "email": user.Mail,
+            "apodo": user.Apodo,
+            "genero": user.Genero,
+            "dedicacion": user.Dedicacion,
+            "personalidad": {
+                "activo": user.Activo,
+                "colaborador": user.Colaborador,
+                "facilDeLlevar": user.FacilDeLlevar,
+                "ordenado": user.Ordenado,
+                "relajado": user.Relajado,
+                "sociable": user.Sociable
+            },
+            "estilo": {
+                "artista": user.Artista,
+                "deportista": user.Deportista,
+                "cinefilo": user.Cinefilo,
+                "madrugador": user.Madrugador,
+                "melomano": user.Melomano,
+                "nocturno": user.Nocturno
+            },
+            "musica": {
+                "electronica": user.Electronica,
+                "latina": user.Latina,
+                "metal": user.Metal,
+                "punk": user.Punk,
+                "reggaeton": user.Reggaeton,
+                "rock": user.Rock
+            },
+            "deporte": {
+                "boxeo": user.Boxeo,
+                "rugby": user.Rugby,
+                "running": user.Running,
+                "tennis": user.Tennis,
+                "baloncesto": user.Baloncesto,
+                "futbol": user.Futbol
+            },
+            "peliculas": {
+                "accion": user.Accion,
+                "animacion": user.Animacion,
+                "comedia": user.Comedia,
+                "terror": user.Terror,
+                "romanticas": user.Romanticas,
+                "cienciaFiccion": user.CienciaFiccion
+            },
+            "instagram": user.Instagram,
+            "twitter": user.Twitter,
+            "linkedin": user.LinkedIn,
+            "facebook": user.Facebook,
+            "descripcion": user.Descripcion
+        }
 }
 
 
