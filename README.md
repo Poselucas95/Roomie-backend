@@ -76,6 +76,7 @@ Made with :heart:
  ------------------------------------------------------------------- | ------ | ----------------------------------------------------- 
 [`/api/user/{userId}`](#buscar-usuario)                              | GET    | Buscar un usuario
 [`/api/user/`](#crear-usuario)                                       | POST   | Registra un nuevo usuario
+[`/api/user/`](#modificar-usuario)                                   | PUT    | Modificar un usuario
 
 
 ## Ejemplos
@@ -84,121 +85,122 @@ Made with :heart:
 ###### Response:
  ```javascript
 {
-  "idFirebase": "",
-  "Nombre": "",
-  "Apellido": "",
-  "Edad": 0,
-  "Dni": "",
-  "Mail": "",
-  "Apodo": "",
-  "Genero": "1/0",
-  "Dedicacion": "1/0",
-  "personalidad": {
-      "activo": "1/0",
-      "colaborador": "1/0",
-      "facilDeLlevar": "1/0",
-      "ordenado": "1/0",
-      "relajado": "1/0",
-      "sociable": "1/0"
-  },
-  "estilo": {
-      "artista": "1/0",
-      "deportista": "1/0",
-      "cinefilo": "1/0",
-      "madrugador": "1/0",
-      "melomano": "1/0",
-      "nocturno": "1/0"
-  },
-  "musica": {
-      "electronica": "1/0",
-      "latina": "1/0",
-      "metal": "1/0",
-      "punk": "1/0",
-      "reggaeton": "1/0",
-      "rock": "1/0"
-  },
-  "deporte": {
-      "boxeo": "1/0",
-      "rugby": "1/0",
-      "running": "1/0",
-      "tenis": "1/0",
-      "baloncesto": "1/0",
-      "futboll": "1/0"
-  },
-  "peliculas": {
-      "accion": "1/0",
-      "animacion": "1/0",
-      "comedia": "1/0",
-      "terror": "1/0",
-      "romanticas": "1/0",
-      "cienciaFiccion": "1/0"
-  },
-  "Instagram": "",
-  "Twitter": "",
-  "LinkedIn": "",
-  "Facebook": "",
-  "Descripcion": ""
+    "userId": "test",
+    "nombre": "Probando Probando",
+    "apellido": "test",
+    "edad": 10,
+    "dni": "test",
+    "email": "test",
+    "apodo": "test",
+    "genero": 1,
+    "dedicacion": 1,
+    "personalidad": {
+        "activo": true,
+        "colaborador": true,
+        "facilDeLlevar": true,
+        "ordenado": true,
+        "relajado": true,
+        "sociable": true
+    },
+    "estilo": {
+        "artista": true,
+        "deportista": true,
+        "cinefilo": true,
+        "madrugador": true,
+        "melomano": true,
+        "nocturno": true
+    },
+    "musica": {
+        "electronica": true,
+        "latina": true,
+        "metal": true,
+        "punk": true,
+        "reggaeton": true,
+        "rock": true
+    },
+    "deporte": {
+        "boxeo": true,
+        "rugby": true,
+        "running": true,
+        "tennis": true,
+        "baloncesto": true,
+        "futboll": true
+    },
+    "peliculas": {
+        "accion": true,
+        "animacion": true,
+        "comedia": true,
+        "terror": true,
+        "romanticas": true,
+        "cienciaFiccion": true
+    },
+    "instagram": "",
+    "twitter": "",
+    "linkedin": "",
+    "facebook": "",
+    "descripcion": ""
 }
 ```
 
 ### Crear Usuario
+### Modificar Usuario
 ###### Body:
  ```javascript
 {
-  "idFirebase": "",
-  "Nombre": "",
-  "Apellido": "",
-  "Edad": 0,
-  "Dni": "",
-  "Mail": "",
-  "Apodo": "",
-  "Genero": "1/0",
-  "Dedicacion": "1/0",
-  "personalidad": {
-      "activo": "1/0",
-      "colaborador": "1/0",
-      "facilDeLlevar": "1/0",
-      "ordenado": "1/0",
-      "relajado": "1/0",
-      "sociable": "1/0"
-  },
-  "estilo": {
-      "artista": "1/0",
-      "deportista": "1/0",
-      "cinefilo": "1/0",
-      "madrugador": "1/0",
-      "melomano": "1/0",
-      "nocturno": "1/0"
-  },
-  "musica": {
-      "electronica": "1/0",
-      "latina": "1/0",
-      "metal": "1/0",
-      "punk": "1/0",
-      "reggaeton": "1/0",
-      "rock": "1/0"
-  },
-  "deporte": {
-      "boxeo": "1/0",
-      "rugby": "1/0",
-      "running": "1/0",
-      "tenis": "1/0",
-      "baloncesto": "1/0",
-      "futboll": "1/0"
-  },
-  "peliculas": {
-      "accion": "1/0",
-      "animacion": "1/0",
-      "comedia": "1/0",
-      "terror": "1/0",
-      "romanticas": "1/0",
-      "cienciaFiccion": "1/0"
-  },
-  "Instagram": "",
-  "Twitter": "",
-  "LinkedIn": "",
-  "Facebook": "",
-  "Descripcion": ""
+    "userId": "test",
+    "nombre": "Probando Probando",
+    "apellido": "test",
+    "edad": 10,
+    "dni": "test",
+    "email": "test",
+    "apodo": "test",
+    "genero": 1,
+    "dedicacion": 1,
+    "personalidad": {
+        "activo": true,
+        "colaborador": true,
+        "facilDeLlevar": true,
+        "ordenado": true,
+        "relajado": true,
+        "sociable": true
+    },
+    "estilo": {
+        "artista": true,
+        "deportista": true,
+        "cinefilo": true,
+        "madrugador": true,
+        "melomano": true,
+        "nocturno": true
+    },
+    "musica": {
+        "electronica": true,
+        "latina": true,
+        "metal": true,
+        "punk": true,
+        "reggaeton": true,
+        "rock": true
+    },
+    "deporte": {
+        "boxeo": true,
+        "rugby": true,
+        "running": true,
+        "tennis": true,
+        "baloncesto": true,
+        "futboll": true
+    },
+    "peliculas": {
+        "accion": true,
+        "animacion": true,
+        "comedia": true,
+        "terror": true,
+        "romanticas": true,
+        "cienciaFiccion": true
+    },
+    "instagram": "",
+    "twitter": "",
+    "linkedin": "",
+    "facebook": "",
+    "descripcion": ""
 }
 ```
 
