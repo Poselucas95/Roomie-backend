@@ -1,10 +1,12 @@
+/* eslint-disable no-eq-null */
+/* eslint-disable eqeqeq */
 /* eslint-disable consistent-return */
 /* eslint-disable promise/always-return */
 const sql = require('../database/sql')
 const mssql = require( "mssql" );
 
 
-const getParams = (body) => {
+const getParams = (body, user) => {
     return [
         { name: 'IdFirebase', sqltype: mssql.NVarChar, value: body.userId},
         { name: 'Nombre', sqltype: mssql.NVarChar, value: body.nombre},
@@ -15,35 +17,35 @@ const getParams = (body) => {
         { name: 'Apodo', sqltype: mssql.NVarChar,  value: body.apodo},
         { name: 'Genero', sqltype: mssql.NVarChar,  value: body.genero},
         { name: 'Dedicacion', sqltype: mssql.NVarChar,  value: body.dedicacion},
-        { name: 'Activo', sqltype: mssql.Bit,  value: body.personalidad.activo || false},
-        { name: 'Colaborador', sqltype: mssql.Bit,  value: body.personalidad.colaborador || false},
-        { name: 'FacilDeLlevar', sqltype: mssql.Bit,  value: body.personalidad.facilDeLlevar || false},
-        { name: 'Ordenado', sqltype: mssql.Bit,  value: body.personalidad.ordenado || false},
-        { name: 'Relajado', sqltype: mssql.Bit,  value: body.personalidad.relajado || false},
-        { name: 'Sociable', sqltype: mssql.Bit,  value: body.personalidad.sociable || false},
-        { name: 'Artista', sqltype: mssql.Bit,  value: body.estilo.artista || false},
-        { name: 'Deportista', sqltype: mssql.Bit,  value: body.estilo.deportista || false},
-        { name: 'Cinefilo', sqltype: mssql.Bit,  value: body.estilo.cinefilo || false},
-        { name: 'Madrugador', sqltype: mssql.Bit,  value: body.estilo.madrugador || false},
-        { name: 'Melomano', sqltype: mssql.Bit,  value: body.estilo.melomano || false},
-        { name: 'Nocturno', sqltype: mssql.Bit,  value: body.estilo.nocturno || false},
-        { name: 'Electronica', sqltype: mssql.Bit,  value: body.musica.electronica || false},
-        { name: 'Latina', sqltype: mssql.Bit,  value: body.musica.latina || false},
-        { name: 'Metal', sqltype: mssql.Bit,  value: body.musica.metal || false},
-        { name: 'Punk', sqltype: mssql.Bit,  value: body.musica.punk || false},
-        { name: 'Reggaeton', sqltype: mssql.Bit,  value: body.musica.reggaeton || false},
-        { name: 'Boxeo', sqltype: mssql.Bit,  value: body.deporte.boxeo || false},
-        { name: 'Rugby', sqltype: mssql.Bit,  value: body.deporte.rugby || false},
-        { name: 'Running', sqltype: mssql.Bit,  value: body.deporte.running || false},
-        { name: 'Tennis', sqltype: mssql.Bit,  value: body.deporte.tennis || false},
-        { name: 'Baloncesto', sqltype: mssql.Bit,  value: body.deporte.baloncesto || false},
-        { name: 'Futbol', sqltype: mssql.Bit,  value: body.deporte.futbol || false},
-        { name: 'Accion', sqltype: mssql.Bit,  value: body.peliculas.accion || false},
-        { name: 'Animacion', sqltype: mssql.Bit,  value: body.peliculas.animacion},
-        { name: 'Comedia', sqltype: mssql.Bit,  value: body.peliculas.comedia || false},
-        { name: 'Terror', sqltype: mssql.Bit,  value: body.peliculas.terror || false},
-        { name: 'Romanticas', sqltype: mssql.Bit,  value: body.peliculas.romanticas || false},
-        { name: 'CienciaFiccion', sqltype: mssql.Bit,  value: body.peliculas.cienciaFiccion || false},
+        { name: 'Activo', sqltype: mssql.Bit,  value: body.personalidad.activo != null ? body.personalidad.activo : (user != null ? user.personalidad.activo : false) },
+        { name: 'Colaborador', sqltype: mssql.Bit,  value: body.personalidad.colaborador != null ? body.personalidad.colaborador : (user != null ? user.personalidad.colaborador : false)},
+        { name: 'FacilDeLlevar', sqltype: mssql.Bit,  value: body.personalidad.facilDeLlevar != null ? body.personalidad.facilDeLlevar : (user != null ? user.personalidad.facilDeLlevar : false)},
+        { name: 'Ordenado', sqltype: mssql.Bit,  value: body.personalidad.ordenado != null ? body.personalidad.ordenado : (user != null ? user.personalidad.ordenado : false)},
+        { name: 'Relajado', sqltype: mssql.Bit,  value: body.personalidad.relajado != null ? body.personalidad.relajado : (user != null ? user.personalidad.relajado : false)},
+        { name: 'Sociable', sqltype: mssql.Bit,  value: body.personalidad.sociable != null ? body.personalidad.sociable : (user != null ? user.personalidad.sociable : false)},
+        { name: 'Artista', sqltype: mssql.Bit,  value: body.estilo.artista != null ? body.estilo.artista : (user != null ? user.estilo.artista : false)},
+        { name: 'Deportista', sqltype: mssql.Bit,  value: body.estilo.deportista != null ? body.estilo.deportista : (user != null ? user.estilo.deportista : false)},
+        { name: 'Cinefilo', sqltype: mssql.Bit,  value: body.estilo.cinefilo != null ? body.estilo.cinefilo : (user != null ? user.estilo.cinefilo : false)},
+        { name: 'Madrugador', sqltype: mssql.Bit,  value: body.estilo.madrugador != null ? body.estilo.madrugador : (user != null ? user.estilo.madrugador : false)},
+        { name: 'Melomano', sqltype: mssql.Bit,  value: body.estilo.melomano != null ? body.estilo.melomano : (user != null ? user.estilo.melomano : false)},
+        { name: 'Nocturno', sqltype: mssql.Bit,  value: body.estilo.nocturno != null ? body.estilo.nocturno : (user != null ? user.estilo.nocturno : false)},
+        { name: 'Electronica', sqltype: mssql.Bit,  value: body.musica.electronica != null ? body.musica.electronica : (user != null ? user.musica.electronica : false)},
+        { name: 'Latina', sqltype: mssql.Bit,  value: body.musica.latina != null ? body.musica.latina : (user != null ? user.musica.latina : false)},
+        { name: 'Metal', sqltype: mssql.Bit,  value: body.musica.metal != null ? body.musica.metal : (user != null ? user.musica.metal : false)},
+        { name: 'Punk', sqltype: mssql.Bit,  value: body.musica.punk != null ? body.musica.punk : (user !=null ? user.musica.punk : false)},
+        { name: 'Reggaeton', sqltype: mssql.Bit,  value: body.musica.reggaeton != null ? body.musica.reggaeton : (user != null ? user.musica.reggaeton : false)},
+        { name: 'Boxeo', sqltype: mssql.Bit,  value: body.deporte.boxeo != null ? body.deporte.boxeo : (user != null ? user.deporte.boxeo : false)},
+        { name: 'Rugby', sqltype: mssql.Bit,  value: body.deporte.rugby != null ? body.deporte.rugby : (user != null ? user.deporte.rugby : false)},
+        { name: 'Running', sqltype: mssql.Bit,  value: body.deporte.running != null ? body.deporte.running : (user != null ? user.deporte.running : false)},
+        { name: 'Tennis', sqltype: mssql.Bit,  value: body.deporte.tennis != null ? body.deporte.tennis : (user != null ? user.deporte.tennis : false)},
+        { name: 'Baloncesto', sqltype: mssql.Bit,  value: body.deporte.baloncesto != null ? body.deporte.baloncesto : (user != null ? user.deporte.baloncesto : false)},
+        { name: 'Futbol', sqltype: mssql.Bit,  value: body.deporte.futbol != null ? body.deporte.futbol : (user != null ? user.deporte.futbol : false)},
+        { name: 'Accion', sqltype: mssql.Bit,  value: body.peliculas.accion != null ? body.peliculas.accion : (user != null ? user.peliculas.accion : false)},
+        { name: 'Animacion', sqltype: mssql.Bit,  value: body.peliculas.animacion != null ? body.peliculas.animacion : (user != null ? user.peliculas.animacion : false)},
+        { name: 'Comedia', sqltype: mssql.Bit,  value: body.peliculas.comedia != null ? body.peliculas.comedia : (user != null ? user.peliculas.comedia : false)},
+        { name: 'Terror', sqltype: mssql.Bit,  value: body.peliculas.terror != null ? body.peliculas.terror : (user != null ? user.peliculas.terror : false)},
+        { name: 'Romanticas', sqltype: mssql.Bit,  value: body.peliculas.romanticas != null ? body.peliculas.romanticas : (user != null ? user.peliculas.romanticas : false)},
+        { name: 'CienciaFiccion', sqltype: mssql.Bit,  value: body.peliculas.cienciaFiccion != null ? body.peliculas.cienciaFiccion : (user != null ? user.peliculas.cienciaFiccion : false)},
         { name: 'Instagram', sqltype: mssql.NVarChar,  value: body.instagram},
         { name: 'Twitter', sqltype: mssql.NVarChar,  value: body.twitter},
         { name: 'LinkedIn', sqltype: mssql.NVarChar,  value: body.linkedin},
@@ -51,6 +53,7 @@ const getParams = (body) => {
         { name: 'Descripcion', sqltype: mssql.NVarChar,  value: body.descripcion},
     ];
 }
+
 
 async function getUser(userId) {
     let result;
@@ -65,10 +68,11 @@ async function getUser(userId) {
         })
         // Cerramos la conexión
         await client.close()
-        console.dir(result)
+        if(result[0] == null) return null
         return formatUser(result[0])
     }catch (err){
         console.dir(err)
+        return err
     }
 }
 
@@ -90,16 +94,17 @@ async function createUser(body) {
         return result
     }catch (err){
         console.dir(err)
+        return err
     }
 }
 
-async function updateUser(body) {
+async function updateUser(body, user) {
     let result;
     const client = await sql.getConnection()
     try{
         let queryPrepared = await client.request()
         // Parametros a insertar
-        var parameters = getParams(body)
+        var parameters = getParams(body, user)
         // Injección de parametros
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
@@ -111,10 +116,11 @@ async function updateUser(body) {
         return result
     }catch (err){
         console.dir(err)
+        return err
     }
 }
 
-
+// Formatea la salida de json que reciben desde front para GET
 const formatUser = (user) => {
     return { "userId": user.IdFirebase,
             "nombre": user.Nombre,
@@ -125,6 +131,7 @@ const formatUser = (user) => {
             "apodo": user.Apodo,
             "genero": user.Genero,
             "dedicacion": user.Dedicacion,
+            "fotos": user.Fotos,
             "personalidad": {
                 "activo": user.Activo,
                 "colaborador": user.Colaborador,
@@ -173,6 +180,15 @@ const formatUser = (user) => {
         }
 }
 
+
+
+const insertFotos = () => {
+
+}
+
+const getFotos = () => {
+
+}
 
 
 module.exports = {createUser, getUser, updateUser}

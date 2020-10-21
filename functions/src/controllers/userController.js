@@ -23,6 +23,7 @@ async function createUser(body) {
         user = await userService.getUser(body.userId)
         if(user != null) return { 'result': "El usuario ya existe", 'code': 404}
         response = await userService.createUser(body)
+        if(response.originalError && response.originalError.info.name === "ERROR" ) return { 'result': 'Ha ocurrido un error', "code": 400}
         return { 'result': response, 'code': 200}
     }catch(error){
         console.dir(error)
@@ -34,9 +35,12 @@ async function createUser(body) {
 
 async function updateUser(body) {
     try{
+        // Me traigo el usuario para verificar que existe.
         user = await userService.getUser(body.userId)
+        // Si el usuario no existe, devolvemos result y codigo 404.
         if(user == null) return { 'result': "El usuario no existe", 'code': 404}
-        response = await userService.updateUser(body)
+        response = await userService.updateUser(body, user)
+        if(response.originalError && response.originalError.info.name === "ERROR" ) return { 'result': 'Ha ocurrido un error', "code": 400}
         return { 'result': response, 'code': 200}
     }catch(error){
         console.dir(error)
