@@ -68,7 +68,16 @@ async function getUser(userId) {
         })
         // Cerramos la conexión
         await client.close()
+        // Si el usuario NO existe, devolvemos null
         if(result[0] == null) return null
+        // Me traigo las fotos
+        fotos = await getFotos(userId);
+        // Inyectamos en un array el value directamente
+        fotosArray = []
+        fotos.forEach(foto => fotosArray.push(foto.Value))
+        // Le inyectamos las fotos
+        result[0].Fotos = fotosArray
+        // Formateamos la respuesta
         return formatUser(result[0])
     }catch (err){
         console.dir(err)
@@ -186,8 +195,25 @@ const insertFotos = () => {
 
 }
 
-const getFotos = () => {
-
+const getFotos = async (userId) => {
+    let result;
+    const client = await sql.getConnection()
+    try{
+        let queryPrepared = await client.request()
+        // Parametros a insertar
+        queryPrepared.input('userId', mssql.NVarChar, userId)
+        // Ejecución de la query
+        await queryPrepared.query('SELECT Value FROM FotoPerfil WHERE IdFirebase = @userId').then((response) => {
+            result = response.recordset
+        })
+        // Cerramos la conexión
+        await client.close()
+        if(result[0] == null) return null
+        return result
+    }catch (err){
+        console.dir(err)
+        return err
+    }
 }
 
 
