@@ -77,6 +77,9 @@ Made with :heart:
 [`/api/user/{userId}`](#buscar-usuario)                              | GET    | Buscar un usuario
 [`/api/user/`](#crear-usuario)                                       | POST   | Registra un nuevo usuario
 [`/api/user/`](#modificar-usuario)                                   | PUT    | Modificar un usuario
+[`/api/property/{userId}`](#buscar-propiedad)                        | GET    | Buscar una propiedad
+[`/api/property/`](#crear-propiedad)                                 | POST   | Registra una propiedad
+[`/api/property/`](#modificar-propiedad)                             | PUT    | Modificar una propiedad
 
 
 ## Ejemplos
@@ -212,5 +215,116 @@ Made with :heart:
  ```javascript
 {
    "Usuario registrado correctamente"
+}
+```
+
+### Buscar Propiedad
+
+###### Response:
+ ```javascript
+{
+"IdFirebase": "test13",
+"idPropiedad": 20,
+"ciudad": "Tigre",
+"direccion": "calle falsa 1234",
+"tipoHabitacion": true,
+"tipoCama": "0",
+"tamanoHabitacion": 30,
+"tamanoPropiedad": 50,
+"chicas": 1,
+"chicos": 5,
+"otros": 1,
+"habitacionesInd": 1,
+"habitacionesDob": 1,
+"banosCompletos": 1,
+"toilettes": 1,
+"comodidadProp": {
+"tv": false,
+"wifi": false,
+"acc": true,
+"calefaccion": true,
+"piscina": true,
+"propidadAccesible": false
+},
+"comodidadHab": {
+"banoPrivado": false,
+"accHabitacion": false,
+"balcon": true
+},
+"normas": {
+"fumar": true,
+"mascotas": true,
+"parejas": false,
+"lgtb": true
+},
+"alquilerMensual": 1,
+"depositoGarantia": 1,
+"servicioLimpieza": false,
+"expensas": true,
+"tituloAnuncio": "1",
+"algoMas": "1",
+"preferencia": "1",
+"edadMin": 1,
+"edadMax": 1,
+"actividadPrincipal": "1"
+}
+```
+
+### Crear Propiedad
+### Modificar Propiedad
+###### Body:
+ ```javascript
+
+ {
+  "userId": "test13",
+  "ciudad": "Palermo",
+  "direccion": "calle falsa 1234",
+  "tipoHabitacion": true,
+  "tipoCama": "0",
+  "tamanoHabitacion": 30,
+  "tamanoPropiedad": 50,
+  "chicas": 1,
+  "chicos": 5,
+  "otros": 1,
+  "habitacionesInd": 1,
+  "habitacionesDob": 2,
+  "banosCompletos": 2,
+  "toilettes": 1,
+  "comodidadProp": {
+    "tv": false,
+    "wifi": false,
+    "acc": true,
+    "calefaccion": true,
+    "piscina": true,
+    "propidadAccesible": false
+  },
+  "comodidadHab": {
+    "banoPrivado": false,
+    "accHabitacion": false,
+    "balcon": true
+  },
+  "normas": {
+    "fumar": true,
+    "mascotas": true,
+    "parejas": false,
+    "lgtb": true
+  },
+  "alquilerMensual": 40,
+  "depositoGarantia": 3,
+  "servicioLimpieza": false,
+  "expensas": true,
+  "tituloAnuncio": "CasaLucas",
+  "algoMas": "me gustan las artesanias",
+  "preferencia": "trans",
+  "edadMin": 20,
+  "edadMax": 70,
+  "actividadPrincipal": "bajonero"
+}
+```
+
+###### Response:
+ ```javascript
+{
+   "Propiedad registrada correctamente"
 }
 ```
