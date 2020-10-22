@@ -182,7 +182,7 @@ const getParams = (body, user) => {
         { name: 'Dni', sqltype: mssql.NVarChar,  value: body.dni},
         { name: 'Mail', sqltype: mssql.NVarChar,  value: body.email},
         { name: 'Apodo', sqltype: mssql.NVarChar,  value: body.apodo},
-        { name: 'EsPropietario', sqltype: mssql.Bit, value: body.esPropietario}
+        { name: 'EsPropietario', sqltype: mssql.Bit, value: body.esPropietario},
         { name: 'Genero', sqltype: mssql.NVarChar,  value: body.genero},
         { name: 'Dedicacion', sqltype: mssql.NVarChar,  value: body.dedicacion},
         { name: 'Activo', sqltype: mssql.Bit,  value: body.personalidad.activo != null ? body.personalidad.activo : (user != null ? user.personalidad.activo : false) },
