@@ -60,6 +60,11 @@ async function getProperty(userId) {
         // Cerramos la conexión
         await client.close()
         if(result[0] == null) return null
+        fotos = await getFotos(result[0].IdPropiedad);
+
+        fotosArray =[]
+
+        fotos.forEach(foto => fotosArray.push(foto.value))
         return formatProperty(result[0])
     }catch (err){
         console.dir(err)
@@ -77,7 +82,7 @@ async function createProperty(body) {
         // Injección de parametros
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
-        await queryPrepared.query('INSERT INTO Propiedad (IdFirebase, Ciudad, Direccion, TipoHabitacion, TipoCama, TamanoHabitacion, Apodo, Genero, Dedicacion, Activo, Colaborador, FacilDeLlevar, Ordenado, Relajado, Sociable, Artista, Deportista, Cinefilo, Madrugador, Melomano , Nocturno, Electronica, Latina, Metal, Punk, Reggaeton, Boxeo, Rugby, Running, Tennis, Baloncesto, Futbol, Accion, Animacion, Comedia, Terror, Romanticas, CienciaFiccion, Instagram, Twitter, LinkedIn, Facebook, Descripcion) VALUES (@IdFirebase, @Nombre, @Apellido, @Edad, @Dni, @Mail, @Apodo, @Genero, @Dedicacion, @Activo, @Colaborador, @FacilDeLlevar, @Ordenado, @Relajado, @Sociable, @Artista, @Deportista, @Cinefilo, @Madrugador, @Melomano, @Nocturno, @Electronica, @Latina, @Metal, @Punk, @Reggaeton, @Boxeo, @Rugby, @Running, @Tennis, @Baloncesto, @Futbol, @Accion, @Animacion, @Comedia, @Terror, @Romanticas, @CienciaFiccion, @Instagram, @Twitter, @LinkedIn, @Facebook, @Descripcion)').then((response) => {
+        await queryPrepared.query('INSERT INTO Propiedad (IdFirebase, Ciudad, Direccion, TipoHabitacion, TipoCama, TamanoHabitacion, TamanoPropiedad, Chicas, Chicos, Otros, HabitacionesInd, HabitacionesDob, BanosCompletos, Toilettes, TV, WIFI, ACC, Calefaccion, Piscina, PropiedadACcesible , BanoPrivado, ACCHabitacion, Balcon, Fumar, Mascotas, Parejas, LGTB, AlquilerMensual, DepositoGarantia, ServicioLimpieza, Expensas, TituloAnuncio, AlgoMas, Preferencia, EdadMin, EdadMax, ActividadPrincipal) VALUES (@IdFirebase, @Ciudad, @Direccion, @TipoHabitacion, @TipoCama, @TamanoHabitacion, @TamanoPropiedad, @Chicas, @Chicos, @Otros, @HabitacionesInd, @HabitacionesDob, @BanosCompletos, @Toilettes, @TV, @WIFI, @ACC, @Calefaccion, @Piscina, @PropiedadACcesible , @BanoPrivado, @ACCHabitacion, @Balcon, @Fumar, @Mascotas, @Parejas, @LGTB, @AlquilerMensual, @DepositoGarantia, @ServicioLimpieza, @Expensas, @TituloAnuncio, @AlgoMas, @Preferencia, @EdadMin, @EdadMax, @ActividadPrincipal)').then((response) => {
             result = response
         })
         // Cerramos la conexión
@@ -89,7 +94,7 @@ async function createProperty(body) {
     }
 }
 
-async function updateUser(body) {
+async function updateProperty(body) {
     let result;
     const client = await sql.getConnection()
     try{
@@ -99,7 +104,7 @@ async function updateUser(body) {
         // Injección de parametros
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
-        await queryPrepared.query('UPDATE Perfil SET Nombre = @Nombre, Apellido = @Apellido, Edad = @Edad, Dni = @Dni, Mail = @Mail, Apodo = @Apodo, Genero = @Genero, Dedicacion = @Dedicacion, Activo = @Activo, Colaborador = @Colaborador, FacilDeLlevar = @FacilDeLlevar, Ordenado = @Ordenado, Relajado = @Relajado, Sociable = @Sociable, Artista = @Artista, Deportista = @Deportista, Cinefilo = @Cinefilo, Madrugador = @Madrugador, Melomano = @Melomano , Nocturno = @Nocturno, Electronica = @Electronica, Latina = @Latina, Metal = @Metal, Punk = @Punk, Reggaeton = @Reggaeton, Boxeo = @Boxeo, Rugby = @Rugby, Running = @Running, Tennis = @Tennis, Baloncesto = @Baloncesto, Futbol = @Futbol, Accion = @Accion, Animacion = @Animacion, Comedia = @Comedia, Terror = @Terror, Romanticas = @Romanticas, CienciaFiccion = @CienciaFiccion, Instagram = @Instagram, Twitter = @Twitter, LinkedIn = @LinkedIn, Facebook = @Facebook, Descripcion = @Descripcion WHERE IdFirebase = @IdFirebase').then((response) => {
+        await queryPrepared.query('UPDATE Propiedad SET IdFirebase = @IdFirebase, Ciudad = @Ciudad, Direccion = @Direccion, TipoHabitacion = @TipoHabitacion, TipoCama = @TipoCama, TamanoHabitacion = @TamanoHabitacion, TamanoPropiedad = @TamanoPropiedad, Chicas = @Chicas, Chicos = @Chicos, Otros = @Otros, HabitacionesInd = @HabitacionesInd, HabitacionesDob = @HabitacionesDob, BanosCompletos = @BanosCompletos, Toilettes = @Toilettes, TV = @TV, WIFI = @WIFI, ACC = @ACC, Calefaccion = @Calefaccion, Piscina = @Piscina, PropiedadACcesible = @PropiedadACcesible, BanoPrivado = @BanoPrivado, ACCHabitacion = @ACCHabitacion, Balcon = @Balcon, Fumar = @Fumar, Mascotas = @Mascotas, Parejas = @Parejas, LGTB = @LGTB, AlquilerMensual = @AlquilerMensual, DepositoGarantia = @DepositoGarantia, ServicioLimpieza = @ServicioLimpieza, Expensas = @Expensas, TituloAnuncio = @TituloAnuncio, AlgoMas = @AlgoMas, Preferencia = @Preferencia, EdadMin = @EdadMin, EdadMax = @EdadMax, ActividadPrincipal = @ActividadPrincipal  WHERE IdFirebase = @IdFirebase').then((response) => {
             result = response
         })
         // Cerramos la conexión
@@ -114,6 +119,7 @@ async function updateUser(body) {
 
 const formatProperty = (property) => {
     return { "IdFirebase": property.IdFirebase,
+            "fotos": property.fotos,
             "ciudad": property.Ciudad,
             "direccion": property.Direccion,
             "tipoHabitacion": property.TipoHabitacion,
@@ -160,6 +166,26 @@ const formatProperty = (property) => {
         }
 }
 
+const getFotos = async (propertyId) => {
+    let result;
+    const client = await sql.getConnection()
+    try{
+        let queryPrepared = await client.request()
+        // Parametros a insertar
+        queryPrepared.input('userId', mssql.NVarChar, userId)
+        // Ejecución de la query
+        await queryPrepared.query('SELECT Value FROM FotoPropiedad WHERE IdPropiedad = @propertyId').then((response) => {
+            result = response.recordset
+        })
+        // Cerramos la conexión
+        await client.close()
+        if(result[0] == null) return null
+        return result
+    }catch (err){
+        console.dir(err)
+        return err
+    }
+}
 
 
-module.exports = {createUser, getUser, updateUser}
+module.exports = {createProperty, getProperty, updateProperty}
