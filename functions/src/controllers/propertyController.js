@@ -1,13 +1,12 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable no-eq-null */
 const validator = require('validator').default;
-const propertyService = require('../services/propertyService')
+const propertyService = require('../services/propertyService');
+const userService = require('../services/userService');
 
 
 async function getProperty(userId) {
     try{
-        user = await userService.getUser(userId)
-        if(user == null) return { 'result': {}, 'code': 404}
         property = await propertyService.getProperty(userId)
         return { 'result': property, 'code': 200}
     }catch(error){
@@ -21,7 +20,9 @@ async function getProperty(userId) {
 
 async function createProperty(body) {
     try{
-        property = await property.getProperty(body.userId)
+        user = await userService.getUser(body.userId)
+        if(user == null) return { 'result': "El usuario no existe", 'code': 404}
+        property = await propertyService.getProperty(body.userId)
         if(property != null) return { 'result': "La propiedad ya existe", 'code': 404}
         response = await propertyService.createProperty(body)
         if(response.originalError && response.originalError.info.name === "ERROR" ) return { 'result': 'Ha ocurrido un error', "code": 400}

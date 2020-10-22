@@ -119,6 +119,7 @@ async function updateProperty(body) {
 
 const formatProperty = (property) => {
     return { "IdFirebase": property.IdFirebase,
+            "idPropiedad": property.IdPropiedad,
             "fotos": property.fotos,
             "ciudad": property.Ciudad,
             "direccion": property.Direccion,
@@ -172,14 +173,14 @@ const getFotos = async (propertyId) => {
     try{
         let queryPrepared = await client.request()
         // Parametros a insertar
-        queryPrepared.input('userId', mssql.NVarChar, userId)
+        queryPrepared.input('propertyId', mssql.NVarChar, propertyId)
         // Ejecución de la query
         await queryPrepared.query('SELECT Value FROM FotoPropiedad WHERE IdPropiedad = @propertyId').then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
         await client.close()
-        if(result[0] == null) return null
+        if(result[0] == null) return []
         return result
     }catch (err){
         console.dir(err)
