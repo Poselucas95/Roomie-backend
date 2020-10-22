@@ -102,7 +102,7 @@ const getFotos = async (userId) => {
         })
         // Cerramos la conexión
         await client.close()
-        if(result[0] == null) return null
+        if(result[0] == null) return []
         return result
     }catch (err){
         console.dir(err)
