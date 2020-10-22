@@ -60,6 +60,11 @@ async function getProperty(userId) {
         // Cerramos la conexión
         await client.close()
         if(result[0] == null) return null
+        fotos = await getFotos(userId);
+
+        fotosArray =[]
+        
+        fotos.forEach(foto => fotosArray.push(foto.value))
         return formatProperty(result[0])
     }catch (err){
         console.dir(err)
@@ -77,7 +82,7 @@ async function createProperty(body) {
         // Injección de parametros
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
-        await queryPrepared.query('INSERT INTO Propiedad (IdFirebase, Ciudad, Direccion, TipoHabitacion, TipoCama, TamanoHabitacion, Apodo, Genero, Dedicacion, Activo, Colaborador, FacilDeLlevar, Ordenado, Relajado, Sociable, Artista, Deportista, Cinefilo, Madrugador, Melomano , Nocturno, Electronica, Latina, Metal, Punk, Reggaeton, Boxeo, Rugby, Running, Tennis, Baloncesto, Futbol, Accion, Animacion, Comedia, Terror, Romanticas, CienciaFiccion, Instagram, Twitter, LinkedIn, Facebook, Descripcion) VALUES (@IdFirebase, @Nombre, @Apellido, @Edad, @Dni, @Mail, @Apodo, @Genero, @Dedicacion, @Activo, @Colaborador, @FacilDeLlevar, @Ordenado, @Relajado, @Sociable, @Artista, @Deportista, @Cinefilo, @Madrugador, @Melomano, @Nocturno, @Electronica, @Latina, @Metal, @Punk, @Reggaeton, @Boxeo, @Rugby, @Running, @Tennis, @Baloncesto, @Futbol, @Accion, @Animacion, @Comedia, @Terror, @Romanticas, @CienciaFiccion, @Instagram, @Twitter, @LinkedIn, @Facebook, @Descripcion)').then((response) => {
+        await queryPrepared.query('INSERT INTO Propiedad (IdFirebase, Ciudad, Direccion, TipoHabitacion, TipoCama, TamanoHabitacion, TamanoPropiedad, Chicas, Chicos, Otros, HabitacionesInd, HabitacionesDob, BanosCompletos, Toilettes, TV, WIFI, ACC, Calefaccion, Piscina, PropiedadACcesible , BanoPrivado, ACCHabitacion, Balcon, Fumar, Mascotas, Parejas, LGTB, AlquilerMensual, DepositoGarantia, ServicioLimpieza, Expensas, TituloAnuncio, AlgoMas, Preferencia, EdadMin, EdadMax, ActividadPrincipal) VALUES (IdFirebase, Ciudad, Direccion, TipoHabitacion, TipoCama, TamanoHabitacion, TamanoPropiedad, Chicas, Chicos, Otros, HabitacionesInd, HabitacionesDob, BanosCompletos, Toilettes, TV, WIFI, ACC, Calefaccion, Piscina, PropiedadACcesible , BanoPrivado, ACCHabitacion, Balcon, Fumar, Mascotas, Parejas, LGTB, AlquilerMensual, DepositoGarantia, ServicioLimpieza, Expensas, TituloAnuncio, AlgoMas, Preferencia, EdadMin, EdadMax, ActividadPrincipal)').then((response) => {
             result = response
         })
         // Cerramos la conexión
@@ -114,6 +119,7 @@ async function updateUser(body) {
 
 const formatProperty = (property) => {
     return { "IdFirebase": property.IdFirebase,
+            "fotos": property.fotos,
             "ciudad": property.Ciudad,
             "direccion": property.Direccion,
             "tipoHabitacion": property.TipoHabitacion,
