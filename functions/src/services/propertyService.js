@@ -60,10 +60,10 @@ async function getProperty(userId) {
         // Cerramos la conexión
         await client.close()
         if(result[0] == null) return null
-        fotos = await getFotos(userId);
+        fotos = await getFotos(result[0].IdPropiedad);
 
         fotosArray =[]
-        
+
         fotos.forEach(foto => fotosArray.push(foto.value))
         return formatProperty(result[0])
     }catch (err){
