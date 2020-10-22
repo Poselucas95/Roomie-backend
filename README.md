@@ -92,6 +92,7 @@ Made with :heart:
     "dni": "test",
     "email": "test",
     "apodo": "test",
+    "esPropietario": true
     "fotos": ["foto1", "foto2", "foto3"],
     "genero": "varon",
     "dedicacion": "trabajador",
@@ -155,6 +156,7 @@ Made with :heart:
     "dni": "test",
     "email": "test",
     "apodo": "test",
+    "esPropietario": true
     "fotos": ["foto1", "foto2", "foto3"],
     "genero": "varon",
     "dedicacion": "trabajador",

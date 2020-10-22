@@ -46,7 +46,7 @@ async function createUser(body) {
         // Injección de parametros
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
-        await queryPrepared.query('INSERT INTO Perfil (IdFirebase, Nombre, Apellido, Edad, Dni, Mail, Apodo, Genero, Dedicacion, Activo, Colaborador, FacilDeLlevar, Ordenado, Relajado, Sociable, Artista, Deportista, Cinefilo, Madrugador, Melomano , Nocturno, Electronica, Latina, Metal, Punk, Reggaeton, Boxeo, Rugby, Running, Tennis, Baloncesto, Futbol, Accion, Animacion, Comedia, Terror, Romanticas, CienciaFiccion, Instagram, Twitter, LinkedIn, Facebook, Descripcion) VALUES (@IdFirebase, @Nombre, @Apellido, @Edad, @Dni, @Mail, @Apodo, @Genero, @Dedicacion, @Activo, @Colaborador, @FacilDeLlevar, @Ordenado, @Relajado, @Sociable, @Artista, @Deportista, @Cinefilo, @Madrugador, @Melomano, @Nocturno, @Electronica, @Latina, @Metal, @Punk, @Reggaeton, @Boxeo, @Rugby, @Running, @Tennis, @Baloncesto, @Futbol, @Accion, @Animacion, @Comedia, @Terror, @Romanticas, @CienciaFiccion, @Instagram, @Twitter, @LinkedIn, @Facebook, @Descripcion)').then((response) => {
+        await queryPrepared.query('INSERT INTO Perfil (IdFirebase, Nombre, Apellido, Edad, Dni, Mail, EsPropietario, Apodo, Genero, Dedicacion, Activo, Colaborador, FacilDeLlevar, Ordenado, Relajado, Sociable, Artista, Deportista, Cinefilo, Madrugador, Melomano , Nocturno, Electronica, Rock, Latina, Metal, Punk, Reggaeton, Boxeo, Rugby, Running, Tennis, Baloncesto, Futbol, Accion, Animacion, Comedia, Terror, Romanticas, CienciaFiccion, Instagram, Twitter, LinkedIn, Facebook, Descripcion) VALUES (@IdFirebase, @Nombre, @Apellido, @Edad, @Dni, @Mail, @EsPropietario, @Apodo, @Genero, @Dedicacion, @Activo, @Colaborador, @FacilDeLlevar, @Ordenado, @Relajado, @Sociable, @Artista, @Deportista, @Cinefilo, @Madrugador, @Melomano, @Nocturno, @Electronica, @Rock, @Latina, @Metal, @Punk, @Reggaeton, @Boxeo, @Rugby, @Running, @Tennis, @Baloncesto, @Futbol, @Accion, @Animacion, @Comedia, @Terror, @Romanticas, @CienciaFiccion, @Instagram, @Twitter, @LinkedIn, @Facebook, @Descripcion)').then((response) => {
             result = response
         })
         // Cerramos la conexión
@@ -68,7 +68,7 @@ async function updateUser(body, user) {
         // Injección de parametros
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
-        await queryPrepared.query('UPDATE Perfil SET Nombre = @Nombre, Apellido = @Apellido, Edad = @Edad, Dni = @Dni, Mail = @Mail, Apodo = @Apodo, Genero = @Genero, Dedicacion = @Dedicacion, Activo = @Activo, Colaborador = @Colaborador, FacilDeLlevar = @FacilDeLlevar, Ordenado = @Ordenado, Relajado = @Relajado, Sociable = @Sociable, Artista = @Artista, Deportista = @Deportista, Cinefilo = @Cinefilo, Madrugador = @Madrugador, Melomano = @Melomano , Nocturno = @Nocturno, Electronica = @Electronica, Latina = @Latina, Metal = @Metal, Punk = @Punk, Reggaeton = @Reggaeton, Boxeo = @Boxeo, Rugby = @Rugby, Running = @Running, Tennis = @Tennis, Baloncesto = @Baloncesto, Futbol = @Futbol, Accion = @Accion, Animacion = @Animacion, Comedia = @Comedia, Terror = @Terror, Romanticas = @Romanticas, CienciaFiccion = @CienciaFiccion, Instagram = @Instagram, Twitter = @Twitter, LinkedIn = @LinkedIn, Facebook = @Facebook, Descripcion = @Descripcion WHERE IdFirebase = @IdFirebase').then((response) => {
+        await queryPrepared.query('UPDATE Perfil SET Nombre = @Nombre, Apellido = @Apellido, EsPropietario = @EsPropietario, Edad = @Edad, Dni = @Dni, Mail = @Mail, Apodo = @Apodo, Genero = @Genero, Dedicacion = @Dedicacion, Activo = @Activo, Colaborador = @Colaborador, FacilDeLlevar = @FacilDeLlevar, Ordenado = @Ordenado, Relajado = @Relajado, Sociable = @Sociable, Artista = @Artista, Deportista = @Deportista, Cinefilo = @Cinefilo, Madrugador = @Madrugador, Melomano = @Melomano , Nocturno = @Nocturno, Electronica = @Electronica, Rock = @Rock, Latina = @Latina, Metal = @Metal, Punk = @Punk, Reggaeton = @Reggaeton, Boxeo = @Boxeo, Rugby = @Rugby, Running = @Running, Tennis = @Tennis, Baloncesto = @Baloncesto, Futbol = @Futbol, Accion = @Accion, Animacion = @Animacion, Comedia = @Comedia, Terror = @Terror, Romanticas = @Romanticas, CienciaFiccion = @CienciaFiccion, Instagram = @Instagram, Twitter = @Twitter, LinkedIn = @LinkedIn, Facebook = @Facebook, Descripcion = @Descripcion WHERE IdFirebase = @IdFirebase').then((response) => {
             result = response
         })
         // Cerramos la conexión
@@ -102,7 +102,7 @@ const getFotos = async (userId) => {
         })
         // Cerramos la conexión
         await client.close()
-        if(result[0] == null) return null
+        if(result[0] == null) return []
         return result
     }catch (err){
         console.dir(err)
@@ -120,6 +120,7 @@ const formatUser = (user) => {
             "dni": user.Dni,
             "email": user.Mail,
             "apodo": user.Apodo,
+            "propietario": user.esPropietario,
             "genero": user.Genero,
             "dedicacion": user.Dedicacion,
             "fotos": user.Fotos,
@@ -181,6 +182,7 @@ const getParams = (body, user) => {
         { name: 'Dni', sqltype: mssql.NVarChar,  value: body.dni},
         { name: 'Mail', sqltype: mssql.NVarChar,  value: body.email},
         { name: 'Apodo', sqltype: mssql.NVarChar,  value: body.apodo},
+        { name: 'EsPropietario', sqltype: mssql.Bit, value: body.esPropietario},
         { name: 'Genero', sqltype: mssql.NVarChar,  value: body.genero},
         { name: 'Dedicacion', sqltype: mssql.NVarChar,  value: body.dedicacion},
         { name: 'Activo', sqltype: mssql.Bit,  value: body.personalidad.activo != null ? body.personalidad.activo : (user != null ? user.personalidad.activo : false) },
@@ -196,6 +198,7 @@ const getParams = (body, user) => {
         { name: 'Melomano', sqltype: mssql.Bit,  value: body.estilo.melomano != null ? body.estilo.melomano : (user != null ? user.estilo.melomano : false)},
         { name: 'Nocturno', sqltype: mssql.Bit,  value: body.estilo.nocturno != null ? body.estilo.nocturno : (user != null ? user.estilo.nocturno : false)},
         { name: 'Electronica', sqltype: mssql.Bit,  value: body.musica.electronica != null ? body.musica.electronica : (user != null ? user.musica.electronica : false)},
+        { name: 'Rock', sqltype: mssql.Bit,  value: body.musica.rock != null ? body.musica.rock : (user != null ? user.musica.rock : false)},
         { name: 'Latina', sqltype: mssql.Bit,  value: body.musica.latina != null ? body.musica.latina : (user != null ? user.musica.latina : false)},
         { name: 'Metal', sqltype: mssql.Bit,  value: body.musica.metal != null ? body.musica.metal : (user != null ? user.musica.metal : false)},
         { name: 'Punk', sqltype: mssql.Bit,  value: body.musica.punk != null ? body.musica.punk : (user !=null ? user.musica.punk : false)},
