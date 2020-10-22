@@ -93,8 +93,8 @@ Made with :heart:
     "email": "test",
     "apodo": "test",
     "fotos": ["foto1", "foto2", "foto3"],
-    "genero": 1,
-    "dedicacion": 1,
+    "genero": "varon",
+    "dedicacion": "trabajador",
     "personalidad": {
         "activo": true,
         "colaborador": true,
@@ -155,9 +155,9 @@ Made with :heart:
     "dni": "test",
     "email": "test",
     "apodo": "test",
-    "genero": 1,
     "fotos": ["foto1", "foto2", "foto3"],
-    "dedicacion": 1,
+    "genero": "varon",
+    "dedicacion": "trabajador",
     "personalidad": {
         "activo": true,
         "colaborador": true,
