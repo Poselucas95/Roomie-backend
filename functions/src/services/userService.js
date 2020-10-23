@@ -120,7 +120,7 @@ const formatUser = (user) => {
             "dni": user.Dni,
             "email": user.Mail,
             "apodo": user.Apodo,
-            "propietario": user.esPropietario,
+            "propietario": user.EsPropietario,
             "genero": user.Genero,
             "dedicacion": user.Dedicacion,
             "fotos": user.Fotos,
