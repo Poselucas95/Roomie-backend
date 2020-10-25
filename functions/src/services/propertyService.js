@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-eq-null */
 /* eslint-disable promise/always-return */
@@ -85,6 +86,8 @@ async function createProperty(body) {
         await queryPrepared.query('INSERT INTO Propiedad (IdFirebase, Ciudad, Direccion, TipoHabitacion, TipoCama, TamanoHabitacion, TamanoPropiedad, Chicas, Chicos, Otros, HabitacionesInd, HabitacionesDob, BanosCompletos, Toilettes, TV, WIFI, ACC, Calefaccion, Piscina, PropiedadACcesible , BanoPrivado, ACCHabitacion, Balcon, Fumar, Mascotas, Parejas, LGTB, AlquilerMensual, DepositoGarantia, ServicioLimpieza, Expensas, TituloAnuncio, AlgoMas, Preferencia, EdadMin, EdadMax, ActividadPrincipal) VALUES (@IdFirebase, @Ciudad, @Direccion, @TipoHabitacion, @TipoCama, @TamanoHabitacion, @TamanoPropiedad, @Chicas, @Chicos, @Otros, @HabitacionesInd, @HabitacionesDob, @BanosCompletos, @Toilettes, @TV, @WIFI, @ACC, @Calefaccion, @Piscina, @PropiedadACcesible , @BanoPrivado, @ACCHabitacion, @Balcon, @Fumar, @Mascotas, @Parejas, @LGTB, @AlquilerMensual, @DepositoGarantia, @ServicioLimpieza, @Expensas, @TituloAnuncio, @AlgoMas, @Preferencia, @EdadMin, @EdadMax, @ActividadPrincipal)').then((response) => {
             result = response
         })
+        const insertProperty = await getProperty(body.userId)
+        await insertFotos(insertProperty.idPropiedad, body.fotos)
         // Cerramos la conexión
         await client.close()
         return result
@@ -115,6 +118,37 @@ async function updateProperty(body) {
         return err
     }
 }
+
+
+const insertFotos = async (propertyId, fotos) => {
+    try{
+        await mssql.connect(dbConfig)
+        .then(() => {
+                const table = new mssql.Table('FotoPropiedad')
+                table.create = false
+                table.columns.add('IdPropiedad', mssql.NVarChar(65), {nullable: true})
+                table.columns.add('Value', mssql.NVarChar(mssql.MAX), {nullable: true})
+                if (fotos != null){
+                    fotos.forEach(foto => {
+                        table.rows.add(propertyId, foto)
+                    })
+                }
+                const request = new mssql.Request();
+                request.bulk(table, (err, result) => {
+                    if(err != null){
+                        console.dir(err)
+                    }else{
+                        console.dir(result)
+                    }
+                })
+            })
+    }
+    catch (err){
+        console.dir(err)
+        return err
+    }
+}
+
 
 
 const formatProperty = (property) => {
