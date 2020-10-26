@@ -13,8 +13,6 @@ async function getUser(userId) {
         console.dir(error)
         return { 'result': 'Se produjo un error al buscar el usuario', 'code': 500}
     }
-
-    
 }
 
 
