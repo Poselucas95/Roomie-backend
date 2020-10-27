@@ -1,10 +1,20 @@
+/* eslint-disable promise/catch-or-return */
 /* eslint-disable no-eq-null */
 /* eslint-disable eqeqeq */
 /* eslint-disable consistent-return */
 /* eslint-disable promise/always-return */
 const sql = require('../database/sql')
 const mssql = require( "mssql" );
-
+var dbConfig = {
+    server: '35.198.31.187',
+    database: 'rumi-backend',
+    user:'admin',
+    password:'admin',
+    options: {
+        encrypt: true,
+        enableArithAbort: true
+        },
+};
 
 async function getUser(userId) {
     let result;
@@ -51,6 +61,7 @@ async function createUser(body) {
         })
         // Cerramos la conexión
         await client.close()
+        await insertFotos(body.userId, body.fotos)
         return result
     }catch (err){
         console.dir(err)
@@ -81,11 +92,36 @@ async function updateUser(body, user) {
 }
 
 
-
-const insertFotos = () => {
+const insertFotos = async (userId, fotos) => {
+    try{
+        await mssql.connect(dbConfig)
+        .then(() => {
+                const table = new mssql.Table('FotoPerfil')
+                table.create = false
+                table.columns.add('IdFirebase', mssql.NVarChar(65), {nullable: true})
+                table.columns.add('Value', mssql.NVarChar(mssql.MAX), {nullable: true})
+                if (fotos != null){
+                    fotos.forEach(foto => {
+                        table.rows.add(userId, foto)
+                    })
+                }
+                const request = new mssql.Request();
+                request.bulk(table, (err, result) => {
+                    if(err != null){
+                        console.dir(err)
+                    }else{
+                        console.dir(result)
+                    }
+                })
+            })
+    }
+    catch (err){
+        console.dir(err)
+        return err
+    }
 }
 
-const updateFotos = () => {
+const deleteFotos = (userId) => {
 
 }
 
