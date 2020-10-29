@@ -80,7 +80,11 @@ Made with :heart:
 [`/api/property/{userId}`](#buscar-propiedad)                        | GET    | Buscar una propiedad
 [`/api/property/`](#crear-propiedad)                                 | POST   | Registra una propiedad
 [`/api/property/`](#modificar-propiedad)                             | PUT    | Modificar una propiedad
-
+[`/api/match/prop/{propertyId}`](#buscar-match-by-PropId)            | GET    | Buscar un match por id de propiedad
+[`/api/match/user/{userId}`](#buscar-match-by-UserId)                | GET    | Buscar un match por id de usuario
+[`/api/match/`](#crear-match)                                        | POST   | Crear un match
+[`/api/match/`](#modificar-match)                                    | PUT    | Modificar un match
+[`/api/reject/`](#crear-rechazo)                                     | POST   | Crear un rechazo
 
 ## Ejemplos
 ### Buscar Usuario
@@ -326,5 +330,78 @@ Made with :heart:
  ```javascript
 {
    "Propiedad registrada correctamente"
+}
+```
+
+### Buscar Match By PropId
+
+###### Response:
+```javascript
+{
+"IdFirebase": "test4",
+"idPropiedad": 14,
+"estado": "Match",
+"alquilerMensual": 90,
+"tipoHabitacion": true,
+"tamanoHabitacion": 60,
+"ciudad": "Tigre",
+"nombre": "Franco",
+"edad": 24,
+"foto": "foto1"
+}
+ ```
+
+### Buscar Match By UserId
+
+###### Response:
+```javascript
+{
+"IdFirebase": "test4",
+"idPropiedad": 14,
+"estado": "Match",
+"nombre": "Franco",
+"Edad": 24,
+"Genero": "0",
+"Dedicacion": "0",
+"Foto": "foto1"
+}
+ ```
+
+
+### Crear Match
+### Modificar Match
+###### Body:
+ ```javascript
+{
+{
+  "userId": "test11",
+  "idPropiedad": 6,
+  "estado": "Match"
+}
+}
+```
+
+###### Response:
+ ```javascript
+{
+   "Match registrado correctamente"
+}
+```
+
+### Crear Rechazo
+###### Body:
+ ```javascript
+{
+{
+  "userId": "test12",
+  "idPropiedad": 6,
+}
+}
+```
+
+###### Response:
+ ```javascript
+{
+   "Rechazo registrado correctamente"
 }
 ```

@@ -8,28 +8,25 @@ const matchService = require('../services/matchService')
 async function getMatchsByPropId(propertyId) {
     try{
         match = await matchService.getMatchsByPropId(propertyId)
-        if(match == null) return { 'result': {}, 'code': 404}
+        if(match == null) return { 'result': "No hay match con el property ID solicitado", 'code': 404}
         return { 'result': match, 'code': 200}
     }catch(error){
         console.dir(error)
         return { 'result': 'Se produjo un error al buscar el match', 'code': 500}
     }
-
-    
 }
 
 async function getMatchsByUserId(userId) {
     try{
         match = await matchService.getMatchsByUserId(userId)
-        if(match == null) return { 'result': {}, 'code': 404}
+        if(match == null) return { 'result': "No hay match con el user ID solicitado", 'code': 404}
         return { 'result': match, 'code': 200}
     }catch(error){
         console.dir(error)
         return { 'result': 'Se produjo un error al buscar el match', 'code': 500}
     }
-
-    
 }
+
 async function createMatch(body) {
     try{
         match = await matchService.getMatchsByUserId(body.userId)
