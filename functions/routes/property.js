@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-/* UPDATE user. */
+/* UPDATE property. */
 router.put('/', async (req, res) => {
   try{
     var response = await propertyController.updateProperty(req.body)

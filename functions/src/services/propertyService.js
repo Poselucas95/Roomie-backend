@@ -97,7 +97,7 @@ async function createProperty(body) {
     }
 }
 
-async function updateProperty(body) {
+async function updateProperty(body, property) {
     let result;
     const client = await sql.getConnection()
     try{
@@ -106,8 +106,9 @@ async function updateProperty(body) {
         var parameters = getParams(body)
         // Injección de parametros
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
+        queryPrepared.input( { name: 'IdPropiedad', sqltype: mssql.Int, value: property.IdPropiedad},)
         // Ejecución de la query
-        await queryPrepared.query('UPDATE Propiedad SET IdFirebase = @IdFirebase, Ciudad = @Ciudad, Direccion = @Direccion, TipoHabitacion = @TipoHabitacion, TipoCama = @TipoCama, TamanoHabitacion = @TamanoHabitacion, TamanoPropiedad = @TamanoPropiedad, Chicas = @Chicas, Chicos = @Chicos, Otros = @Otros, HabitacionesInd = @HabitacionesInd, HabitacionesDob = @HabitacionesDob, BanosCompletos = @BanosCompletos, Toilettes = @Toilettes, TV = @TV, WIFI = @WIFI, ACC = @ACC, Calefaccion = @Calefaccion, Piscina = @Piscina, PropiedadACcesible = @PropiedadACcesible, BanoPrivado = @BanoPrivado, ACCHabitacion = @ACCHabitacion, Balcon = @Balcon, Fumar = @Fumar, Mascotas = @Mascotas, Parejas = @Parejas, LGTB = @LGTB, AlquilerMensual = @AlquilerMensual, DepositoGarantia = @DepositoGarantia, ServicioLimpieza = @ServicioLimpieza, Expensas = @Expensas, TituloAnuncio = @TituloAnuncio, AlgoMas = @AlgoMas, Preferencia = @Preferencia, EdadMin = @EdadMin, EdadMax = @EdadMax, ActividadPrincipal = @ActividadPrincipal  WHERE IdFirebase = @IdFirebase').then((response) => {
+        await queryPrepared.query('UPDATE Propiedad SET Ciudad = @Ciudad, Direccion = @Direccion, TipoHabitacion = @TipoHabitacion, TipoCama = @TipoCama, TamanoHabitacion = @TamanoHabitacion, TamanoPropiedad = @TamanoPropiedad, Chicas = @Chicas, Chicos = @Chicos, Otros = @Otros, HabitacionesInd = @HabitacionesInd, HabitacionesDob = @HabitacionesDob, BanosCompletos = @BanosCompletos, Toilettes = @Toilettes, TV = @TV, WIFI = @WIFI, ACC = @ACC, Calefaccion = @Calefaccion, Piscina = @Piscina, PropiedadACcesible = @PropiedadACcesible, BanoPrivado = @BanoPrivado, ACCHabitacion = @ACCHabitacion, Balcon = @Balcon, Fumar = @Fumar, Mascotas = @Mascotas, Parejas = @Parejas, LGTB = @LGTB, AlquilerMensual = @AlquilerMensual, DepositoGarantia = @DepositoGarantia, ServicioLimpieza = @ServicioLimpieza, Expensas = @Expensas, TituloAnuncio = @TituloAnuncio, AlgoMas = @AlgoMas, Preferencia = @Preferencia, EdadMin = @EdadMin, EdadMax = @EdadMax, ActividadPrincipal = @ActividadPrincipal  WHERE IdPropiedad = @IdPropiedad').then((response) => {
             result = response
         })
         // Cerramos la conexión
@@ -152,7 +153,7 @@ const insertFotos = async (propertyId, fotos) => {
 
 
 const formatProperty = (property) => {
-    return { "IdFirebase": property.IdFirebase,
+    return { "userId": property.IdFirebase,
             "idPropiedad": property.IdPropiedad,
             "fotos": property.fotos,
             "ciudad": property.Ciudad,

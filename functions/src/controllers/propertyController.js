@@ -40,7 +40,7 @@ async function updateProperty(body) {
         // Me traigo el usuario para verificar que existe.
         property = await propertyService.getProperty(body.userId)
         // Si el usuario no existe, devolvemos result y codigo 404.
-        if(property == null) return { 'result': "El la propiedad no existe", 'code': 404}
+        if(property == null) return { 'result': "La propiedad no existe", 'code': 404}
         response = await propertyService.updateProperty(body, property)
         if(response.originalError && response.originalError.info.name === "ERROR" ) return { 'result': 'Ha ocurrido un error', "code": 400}
         return { 'result': response, 'code': 200}

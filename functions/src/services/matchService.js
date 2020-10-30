@@ -106,7 +106,7 @@ async function updateMatch(body) {
 
 
 const formatMatchsByPropId = (match) => {
-    return { "IdFirebase": match.IdFirebase,
+    return { "userId": match.IdFirebase,
             "idPropiedad": match.IdPropiedad,
             "estado": match.Estado,
             "alquilerMensual": match.AlquilerMensual,
@@ -121,7 +121,7 @@ const formatMatchsByPropId = (match) => {
 
 
 const formatMatchsByUserId = (match) => {
-    return { "IdFirebase": match.IdFirebase,
+    return { "userId": match.IdFirebase,
             "idPropiedad": match.IdPropiedad,
             "estado": match.Estado,
             "nombre": match.Nombre,
