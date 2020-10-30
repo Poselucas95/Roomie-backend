@@ -157,6 +157,7 @@ const formatUser = (user) => {
             "email": user.Mail,
             "apodo": user.Apodo,
             "esPropietario": user.EsPropietario,
+            "tienePropiedad": user.TienePropiedad,
             "genero": user.Genero,
             "dedicacion": user.Dedicacion,
             "fotos": user.Fotos,
