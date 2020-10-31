@@ -108,13 +108,15 @@ async function updateProperty(body, property) {
         var parameters = getParams(body)
         // Injección de parametros
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
-        queryPrepared.input( { name: 'IdPropiedad', sqltype: mssql.Int, value: property.IdPropiedad},)
+        queryPrepared.input('IdPropiedad', mssql.Int, property.IdPropiedad)
         // Ejecución de la query
         await queryPrepared.query('UPDATE Propiedad SET Ciudad = @Ciudad, Barrio = @Barrio, Direccion = @Direccion, TipoHabitacion = @TipoHabitacion, TipoCama = @TipoCama, TamanoHabitacion = @TamanoHabitacion, TamanoPropiedad = @TamanoPropiedad, Chicas = @Chicas, Chicos = @Chicos, Otros = @Otros, HabitacionesInd = @HabitacionesInd, HabitacionesDob = @HabitacionesDob, BanosCompletos = @BanosCompletos, Toilettes = @Toilettes, TV = @TV, WIFI = @WIFI, ACC = @ACC, Calefaccion = @Calefaccion, Piscina = @Piscina, PropiedadACcesible = @PropiedadACcesible, BanoPrivado = @BanoPrivado, ACCHabitacion = @ACCHabitacion, Balcon = @Balcon, Fumar = @Fumar, Mascotas = @Mascotas, Parejas = @Parejas, LGTB = @LGTB, AlquilerMensual = @AlquilerMensual, DepositoGarantia = @DepositoGarantia, ServicioLimpieza = @ServicioLimpieza, Expensas = @Expensas, TituloAnuncio = @TituloAnuncio, AlgoMas = @AlgoMas, Preferencia = @Preferencia, EdadMin = @EdadMin, EdadMax = @EdadMax, ActividadPrincipal = @ActividadPrincipal  WHERE IdPropiedad = @IdPropiedad').then((response) => {
             result = response
         })
         // Cerramos la conexión
         await client.close()
+        await deleteFotos(property.IdPropiedad);
+        await insertFotos(property.IdPropiedad, body.fotos);
         return result
     }catch (err){
         console.dir(err)
@@ -157,7 +159,7 @@ const updatePerfilProp = async (idFirebase) => {
     try{
         let queryPrepared = await client.request()
         // Injección de parametros
-        queryPrepared.input( { name: 'IdFirebase', sqltype: mssql.NVarChar, value: idFirebase},)
+        queryPrepared.input('IdFirebase', mssql.NVarChar, idFirebase)
         // Ejecución de la query
         await queryPrepared.query('UPDATE Perfil SET TienePropiedad = TRUE  WHERE IdFirebase = @IdFirebase').then((response) => {
             result = response
@@ -171,6 +173,25 @@ const updatePerfilProp = async (idFirebase) => {
     }
 }
 
+
+const deleteFotos = async (propertyId) => {
+    const client = await sql.getConnection()
+    try{
+        let queryPrepared = await client.request()
+        // Injección de parametros
+        queryPrepared.input('IdPropiedad', mssql.NVarChar, propertyId)
+        // Ejecución de la query
+        await queryPrepared.query('DELETE FROM FotoPropiedad WHERE IdPropiedad = @IdPropiedad').then((response) => {
+            result = response
+        })
+        // Cerramos la conexión
+        await client.close()
+        return result
+    }catch (err){
+        console.dir(err)
+        return err
+    }
+}
 
 
 const formatProperty = (property) => {

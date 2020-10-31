@@ -83,6 +83,8 @@ async function updateUser(body, user) {
             result = response
         })
         // Cerramos la conexión
+        await deleteFotos(body.userId)
+        await insertFotos(body.userId, body.fotos)
         await client.close()
         return result
     }catch (err){
@@ -121,8 +123,23 @@ const insertFotos = async (userId, fotos) => {
     }
 }
 
-const deleteFotos = (userId) => {
-
+const deleteFotos = async (userId) => {
+    const client = await sql.getConnection()
+    try{
+        let queryPrepared = await client.request()
+        // Injección de parametros
+        queryPrepared.input('IdFirebase', mssql.NVarChar, userId)
+        // Ejecución de la query
+        await queryPrepared.query('DELETE FROM FotoPerfil WHERE IdFirebase = @IdFirebase').then((response) => {
+            result = response
+        })
+        // Cerramos la conexión
+        await client.close()
+        return result
+    }catch (err){
+        console.dir(err)
+        return err
+    }
 }
 
 const getFotos = async (userId) => {
