@@ -9,18 +9,19 @@ const getParams = (body) => {
     return [
         { name: 'IdFirebase', sqltype: mssql.NVarChar, value: body.userId},
         { name: 'Ciudad', sqltype: mssql.NVarChar, value: body.ciudad},
+        { name: 'Barrio', sqltype: mssql.NVarChar, value: body.barrio},
         { name: 'Direccion', sqltype: mssql.NVarChar,  value: body.direccion},
-        { name: 'TipoHabitacion', sqltype: mssql.Int,  value: body.tipoHabitacion},
+        { name: 'TipoHabitacion', sqltype: mssql.Bit,  value: body.tipoHabitacion},
         { name: 'TipoCama', sqltype: mssql.Bit,  value: body.tipoCama || false} ,
-        { name: 'TamanoHabitacion', sqltype: mssql.NVarChar,  value: body.tamanoHabitacion},
-        { name: 'TamanoPropiedad', sqltype: mssql.NVarChar,  value: body.tamanoPropiedad},
+        { name: 'TamanoHabitacion', sqltype: mssql.Int,  value: body.tamanoHabitacion},
+        { name: 'TamanoPropiedad', sqltype: mssql.Int,  value: body.tamanoPropiedad},
         { name: 'Chicas', sqltype: mssql.Int,  value: body.chicas},
         { name: 'Chicos', sqltype: mssql.Int,  value: body.chicos},
-        { name: 'Otros', sqltype: mssql.Bit,  value: body.otros || false},
-        { name: 'HabitacionesInd', sqltype: mssql.Bit,  value: body.habitacionesInd || false},
-        { name: 'HabitacionesDob', sqltype: mssql.Bit,  value: body.habitacionesDob || false},
-        { name: 'BanosCompletos', sqltype: mssql.Bit,  value: body.banosCompletos || false},
-        { name: 'Toilettes', sqltype: mssql.Bit,  value: body.toilettes || false},
+        { name: 'Otros', sqltype: mssql.Int,  value: body.otros || false},
+        { name: 'HabitacionesInd', sqltype: mssql.Int,  value: body.habitacionesInd || false},
+        { name: 'HabitacionesDob', sqltype: mssql.Int,  value: body.habitacionesDob || false},
+        { name: 'BanosCompletos', sqltype: mssql.Int,  value: body.banosCompletos || false},
+        { name: 'Toilettes', sqltype: mssql.Int,  value: body.toilettes || false},
         { name: 'TV', sqltype: mssql.Bit,  value: body.comodidadProp.tv || false},
         { name: 'WIFI', sqltype: mssql.Bit,  value: body.comodidadProp.wifi || false},
         { name: 'ACC', sqltype: mssql.Bit,  value: body.comodidadProp.acc || false},
@@ -34,16 +35,16 @@ const getParams = (body) => {
         { name: 'Mascotas', sqltype: mssql.Bit,  value: body.normas.mascotas || false},
         { name: 'Parejas', sqltype: mssql.Bit,  value: body.normas.parejas || false},
         { name: 'LGTB', sqltype: mssql.Bit,  value: body.normas.lgtb || false},
-        { name: 'AlquilerMensual', sqltype: mssql.Bit,  value: body.alquilerMensual || false},
-        { name: 'DepositoGarantia', sqltype: mssql.Bit,  value: body.depositoGarantia || false},
+        { name: 'AlquilerMensual', sqltype: mssql.Float,  value: body.alquilerMensual || false},
+        { name: 'DepositoGarantia', sqltype: mssql.Float,  value: body.depositoGarantia || false},
         { name: 'ServicioLimpieza', sqltype: mssql.Bit,  value: body.servicioLimpieza || false},
         { name: 'Expensas', sqltype: mssql.Bit,  value: body.expensas || false},
-        { name: 'TituloAnuncio', sqltype: mssql.Bit,  value: body.tituloAnuncio || false},
-        { name: 'AlgoMas', sqltype: mssql.Bit,  value: body.algoMas || false},
-        { name: 'Preferencia', sqltype: mssql.Bit,  value: body.preferencia},
-        { name: 'EdadMin', sqltype: mssql.Bit,  value: body.edadMin || false},
-        { name: 'EdadMax', sqltype: mssql.Bit,  value: body.edadMax || false},
-        { name: 'ActividadPrincipal', sqltype: mssql.Bit,  value: body.actividadPrincipal || false},
+        { name: 'TituloAnuncio', sqltype: mssql.NVarChar,  value: body.tituloAnuncio || false},
+        { name: 'AlgoMas', sqltype: mssql.NVarChar,  value: body.algoMas || false},
+        { name: 'Preferencia', sqltype: mssql.NVarChar,  value: body.preferencia},
+        { name: 'EdadMin', sqltype: mssql.Int,  value: body.edadMin || false},
+        { name: 'EdadMax', sqltype: mssql.Int,  value: body.edadMax || false},
+        { name: 'ActividadPrincipal', sqltype: mssql.NVarChar,  value: body.actividadPrincipal || false},
     ];
 }
 
@@ -83,11 +84,12 @@ async function createProperty(body) {
         // Injección de parametros
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
-        await queryPrepared.query('INSERT INTO Propiedad (IdFirebase, Ciudad, Direccion, TipoHabitacion, TipoCama, TamanoHabitacion, TamanoPropiedad, Chicas, Chicos, Otros, HabitacionesInd, HabitacionesDob, BanosCompletos, Toilettes, TV, WIFI, ACC, Calefaccion, Piscina, PropiedadACcesible , BanoPrivado, ACCHabitacion, Balcon, Fumar, Mascotas, Parejas, LGTB, AlquilerMensual, DepositoGarantia, ServicioLimpieza, Expensas, TituloAnuncio, AlgoMas, Preferencia, EdadMin, EdadMax, ActividadPrincipal) VALUES (@IdFirebase, @Ciudad, @Direccion, @TipoHabitacion, @TipoCama, @TamanoHabitacion, @TamanoPropiedad, @Chicas, @Chicos, @Otros, @HabitacionesInd, @HabitacionesDob, @BanosCompletos, @Toilettes, @TV, @WIFI, @ACC, @Calefaccion, @Piscina, @PropiedadACcesible , @BanoPrivado, @ACCHabitacion, @Balcon, @Fumar, @Mascotas, @Parejas, @LGTB, @AlquilerMensual, @DepositoGarantia, @ServicioLimpieza, @Expensas, @TituloAnuncio, @AlgoMas, @Preferencia, @EdadMin, @EdadMax, @ActividadPrincipal)').then((response) => {
+        await queryPrepared.query('INSERT INTO Propiedad (IdFirebase, Ciudad, Barrio, Direccion, TipoHabitacion, TipoCama, TamanoHabitacion, TamanoPropiedad, Chicas, Chicos, Otros, HabitacionesInd, HabitacionesDob, BanosCompletos, Toilettes, TV, WIFI, ACC, Calefaccion, Piscina, PropiedadACcesible , BanoPrivado, ACCHabitacion, Balcon, Fumar, Mascotas, Parejas, LGTB, AlquilerMensual, DepositoGarantia, ServicioLimpieza, Expensas, TituloAnuncio, AlgoMas, Preferencia, EdadMin, EdadMax, ActividadPrincipal) VALUES (@IdFirebase, @Ciudad, @Barrio, @Direccion, @TipoHabitacion, @TipoCama, @TamanoHabitacion, @TamanoPropiedad, @Chicas, @Chicos, @Otros, @HabitacionesInd, @HabitacionesDob, @BanosCompletos, @Toilettes, @TV, @WIFI, @ACC, @Calefaccion, @Piscina, @PropiedadACcesible , @BanoPrivado, @ACCHabitacion, @Balcon, @Fumar, @Mascotas, @Parejas, @LGTB, @AlquilerMensual, @DepositoGarantia, @ServicioLimpieza, @Expensas, @TituloAnuncio, @AlgoMas, @Preferencia, @EdadMin, @EdadMax, @ActividadPrincipal)').then((response) => {
             result = response
         })
         const insertProperty = await getProperty(body.userId)
         await insertFotos(insertProperty.idPropiedad, body.fotos)
+        await updatePerfilProp(body.userId)
         // Cerramos la conexión
         await client.close()
         return result
@@ -108,7 +110,7 @@ async function updateProperty(body, property) {
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         queryPrepared.input( { name: 'IdPropiedad', sqltype: mssql.Int, value: property.IdPropiedad},)
         // Ejecución de la query
-        await queryPrepared.query('UPDATE Propiedad SET Ciudad = @Ciudad, Direccion = @Direccion, TipoHabitacion = @TipoHabitacion, TipoCama = @TipoCama, TamanoHabitacion = @TamanoHabitacion, TamanoPropiedad = @TamanoPropiedad, Chicas = @Chicas, Chicos = @Chicos, Otros = @Otros, HabitacionesInd = @HabitacionesInd, HabitacionesDob = @HabitacionesDob, BanosCompletos = @BanosCompletos, Toilettes = @Toilettes, TV = @TV, WIFI = @WIFI, ACC = @ACC, Calefaccion = @Calefaccion, Piscina = @Piscina, PropiedadACcesible = @PropiedadACcesible, BanoPrivado = @BanoPrivado, ACCHabitacion = @ACCHabitacion, Balcon = @Balcon, Fumar = @Fumar, Mascotas = @Mascotas, Parejas = @Parejas, LGTB = @LGTB, AlquilerMensual = @AlquilerMensual, DepositoGarantia = @DepositoGarantia, ServicioLimpieza = @ServicioLimpieza, Expensas = @Expensas, TituloAnuncio = @TituloAnuncio, AlgoMas = @AlgoMas, Preferencia = @Preferencia, EdadMin = @EdadMin, EdadMax = @EdadMax, ActividadPrincipal = @ActividadPrincipal  WHERE IdPropiedad = @IdPropiedad').then((response) => {
+        await queryPrepared.query('UPDATE Propiedad SET Ciudad = @Ciudad, Barrio = @Barrio, Direccion = @Direccion, TipoHabitacion = @TipoHabitacion, TipoCama = @TipoCama, TamanoHabitacion = @TamanoHabitacion, TamanoPropiedad = @TamanoPropiedad, Chicas = @Chicas, Chicos = @Chicos, Otros = @Otros, HabitacionesInd = @HabitacionesInd, HabitacionesDob = @HabitacionesDob, BanosCompletos = @BanosCompletos, Toilettes = @Toilettes, TV = @TV, WIFI = @WIFI, ACC = @ACC, Calefaccion = @Calefaccion, Piscina = @Piscina, PropiedadACcesible = @PropiedadACcesible, BanoPrivado = @BanoPrivado, ACCHabitacion = @ACCHabitacion, Balcon = @Balcon, Fumar = @Fumar, Mascotas = @Mascotas, Parejas = @Parejas, LGTB = @LGTB, AlquilerMensual = @AlquilerMensual, DepositoGarantia = @DepositoGarantia, ServicioLimpieza = @ServicioLimpieza, Expensas = @Expensas, TituloAnuncio = @TituloAnuncio, AlgoMas = @AlgoMas, Preferencia = @Preferencia, EdadMin = @EdadMin, EdadMax = @EdadMax, ActividadPrincipal = @ActividadPrincipal  WHERE IdPropiedad = @IdPropiedad').then((response) => {
             result = response
         })
         // Cerramos la conexión
@@ -150,6 +152,25 @@ const insertFotos = async (propertyId, fotos) => {
     }
 }
 
+const updatePerfilProp = async (idFirebase) => {
+    const client = await sql.getConnection()
+    try{
+        let queryPrepared = await client.request()
+        // Injección de parametros
+        queryPrepared.input( { name: 'IdFirebase', sqltype: mssql.NVarChar, value: idFirebase},)
+        // Ejecución de la query
+        await queryPrepared.query('UPDATE Perfil SET TienePropiedad = TRUE  WHERE IdFirebase = @IdFirebase').then((response) => {
+            result = response
+        })
+        // Cerramos la conexión
+        await client.close()
+        return result
+    }catch (err){
+        console.dir(err)
+        return err
+    }
+}
+
 
 
 const formatProperty = (property) => {
@@ -157,6 +178,7 @@ const formatProperty = (property) => {
             "idPropiedad": property.IdPropiedad,
             "fotos": property.fotos,
             "ciudad": property.Ciudad,
+            "barrio": property.Barrio,
             "direccion": property.Direccion,
             "tipoHabitacion": property.TipoHabitacion,
             "tipoCama": property.TipoCama,
