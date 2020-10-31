@@ -11,7 +11,7 @@ const getParams = (body) => {
         { name: 'Ciudad', sqltype: mssql.NVarChar, value: body.ciudad},
         { name: 'Direccion', sqltype: mssql.NVarChar,  value: body.direccion},
         { name: 'TipoHabitacion', sqltype: mssql.Int,  value: body.tipoHabitacion},
-        { name: 'TipoCama', sqltype: mssql.NVarChar,  value: body.tipoCama},
+        { name: 'TipoCama', sqltype: mssql.Bit,  value: body.tipoCama || false} ,
         { name: 'TamanoHabitacion', sqltype: mssql.NVarChar,  value: body.tamanoHabitacion},
         { name: 'TamanoPropiedad', sqltype: mssql.NVarChar,  value: body.tamanoPropiedad},
         { name: 'Chicas', sqltype: mssql.Int,  value: body.chicas},
