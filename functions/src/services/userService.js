@@ -27,8 +27,6 @@ async function getUser(userId) {
         await queryPrepared.query('SELECT * FROM Perfil WHERE IdFirebase = @userId').then((response) => {
             result = response.recordset
         })
-        // Cerramos la conexión
-        await client.close()
         // Si el usuario NO existe, devolvemos null
         if(result[0] == null) return null
         // Me traigo las fotos
@@ -154,7 +152,6 @@ const getFotos = async (userId) => {
             result = response.recordset
         })
         // Cerramos la conexión
-        await client.close()
         if(result[0] == null) return []
         return result
     }catch (err){
