@@ -9,7 +9,7 @@
     "rewrites": [
       {
         "source": "**",
-        "function": "app-1"
+        "function": "rumiApi"
       }
     ]
   },
