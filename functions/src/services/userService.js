@@ -100,7 +100,7 @@ const insertFotos = async (userId, fotos) => {
         .then(() => {
                 const table = new mssql.Table('FotoPerfil')
                 table.create = false
-                table.columns.add('IdFirebase', mssql.NVarChar(65), {nullable: true})
+                table.columns.add('IdFirebase', mssql.NVarChar(64), {nullable: true})
                 table.columns.add('Value', mssql.NVarChar(mssql.MAX), {nullable: true})
                 if (fotos != null){
                     fotos.forEach(foto => {

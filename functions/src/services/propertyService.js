@@ -4,6 +4,16 @@
 /* eslint-disable promise/always-return */
 const sql = require('../database/sql')
 const mssql = require( "mssql" );
+var dbConfig = {
+    server: '35.198.31.187',
+    database: 'rumi-backend',
+    user:'admin',
+    password:'admin',
+    options: {
+        encrypt: true,
+        enableArithAbort: true
+        },
+};
 
 const getParams = (body) => {
     return [
@@ -131,8 +141,8 @@ const insertFotos = async (propertyId, fotos) => {
         .then(() => {
                 const table = new mssql.Table('FotoPropiedad')
                 table.create = false
-                table.columns.add('IdPropiedad', mssql.NVarChar(65), {nullable: true})
-                table.columns.add('Value', mssql.NVarChar(mssql.MAX), {nullable: true})
+                table.columns.add('IdPropiedad', mssql.Int, {nullable: true})
+                table.columns.add('Value', mssql.NVarChar(mssql.MAX), {nullable: false})
                 if (fotos != null){
                     fotos.forEach(foto => {
                         table.rows.add(propertyId, foto)
