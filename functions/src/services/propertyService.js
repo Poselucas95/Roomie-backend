@@ -73,10 +73,9 @@ async function getProperty(userId) {
         await client.close()
         if(result[0] == null) return null
         fotos = await getFotos(result[0].IdPropiedad);
-
         fotosArray =[]
-
-        fotos.forEach(foto => fotosArray.push(foto.value))
+        fotos.forEach(foto => fotosArray.push(foto.Value))
+        result[0].Fotos = fotosArray
         return formatProperty(result[0])
     }catch (err){
         console.dir(err)
@@ -98,10 +97,10 @@ async function createProperty(body) {
             result = response
         })
         const insertProperty = await getProperty(body.userId)
+        await client.close()
         await insertFotos(insertProperty.idPropiedad, body.fotos)
         await updatePerfilProp(body.userId)
         // Cerramos la conexión
-        await client.close()
         return result
     }catch (err){
         console.dir(err)
@@ -142,7 +141,7 @@ const insertFotos = async (propertyId, fotos) => {
                 const table = new mssql.Table('FotoPropiedad')
                 table.create = false
                 table.columns.add('IdPropiedad', mssql.Int, {nullable: true})
-                table.columns.add('Value', mssql.NVarChar(mssql.MAX), {nullable: false})
+                table.columns.add('Value', mssql.NVarChar(mssql.MAX), {nullable: true})
                 if (fotos != null){
                     fotos.forEach(foto => {
                         table.rows.add(propertyId, foto)
@@ -171,7 +170,7 @@ const updatePerfilProp = async (idFirebase) => {
         // Injección de parametros
         queryPrepared.input('IdFirebase', mssql.NVarChar, idFirebase)
         // Ejecución de la query
-        await queryPrepared.query('UPDATE Perfil SET TienePropiedad = TRUE  WHERE IdFirebase = @IdFirebase').then((response) => {
+        await queryPrepared.query('UPDATE Perfil SET TienePropiedad = 1  WHERE IdFirebase = @IdFirebase').then((response) => {
             result = response
         })
         // Cerramos la conexión
@@ -207,7 +206,7 @@ const deleteFotos = async (propertyId) => {
 const formatProperty = (property) => {
     return { "userId": property.IdFirebase,
             "idPropiedad": property.IdPropiedad,
-            "fotos": property.fotos,
+            "fotos": property.Fotos,
             "ciudad": property.Ciudad,
             "barrio": property.Barrio,
             "direccion": property.Direccion,
