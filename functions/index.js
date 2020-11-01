@@ -19,4 +19,4 @@ app.use('/api/match', matchRouter)
 app.use('/api/reject', rejectRouter)
 
 
-exports.rumiApi = functions.region("southamerica-east1").https.onRequest(app);
+exports.app = functions.region("southamerica-east1").https.onRequest(app);
