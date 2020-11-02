@@ -19,17 +19,14 @@ async function getMatchsByUserId(userId) {
     try{
         let queryPrepared = await client.request()
         // Parametros a insertar
-        queryPrepared.input('userId', mssql.NVarChar, userId)
+        queryPrepared.input('IdFirebase', mssql.NVarChar, userId)
         // Ejecución de la query
-        await queryPrepared.query('SELECT M.*, P.Nombre, P.Edad, P.Genero, P.Dedicacion FROM Matchs M INNER JOIN Perfil P ON P.IdFirebase = M.IdFirebase WHERE M.IdFirebase = @userId').then((response) => {
+        await queryPrepared.query('SELECT M.*, PR.AlquilerMensual,PR.TipoHabitacion, PR.TamanoHabitacion, PR.Ciudad , fp.Value as Foto, P.Nombre, P.Edad FROM Matchs M  INNER JOIN Propiedad PR ON PR.IdPropiedad = M.IdPropiedad INNER JOIN Perfil P ON P.IdFirebase = PR.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM   FotoPropiedad f WHERE  M.IdPropiedad = f.IdPropiedad) fp WHERE M.IdFirebase =  @IdFirebase').then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
         await client.close()
         if(result[0] == null) return null
-        foto = await getFotosPerfil(result[0].IdFirebase);
-
-        result[0].Foto = foto
         return formatMatchsByUserId(result[0])
     }catch (err){
         console.dir(err)
@@ -42,17 +39,14 @@ async function getMatchsByPropId(propertyId) {
     try{
         let queryPrepared = await client.request()
         // Parametros a insertar
-        queryPrepared.input('propertyId', mssql.Int, propertyId)
+        queryPrepared.input('IdPropiedad', mssql.Int, propertyId)
         // Ejecución de la query
-        await queryPrepared.query('SELECT M.*, PR.AlquilerMensual,PR.TipoHabitacion, PR.TamanoHabitacion, PR.Ciudad ,P.Nombre, P.Edad FROM Matchs M INNER JOIN Propiedad PR ON PR.IdPropiedad = M.IdPropiedad INNER JOIN Perfil P ON P.IdFirebase = PR.IdFirebase WHERE M.IdPropiedad = @propertyId').then((response) => {
+        await queryPrepared.query('SELECT M.*, P.Nombre, P.Edad, P.Genero, P.Dedicacion, fp.Value as Foto FROM Matchs M  INNER JOIN Perfil P ON P.IdFirebase = M.IdFirebase  OUTER APPLY (SELECT TOP 1 * FROM   FotoPerfil f WHERE  M.IdFirebase = f.IdFirebase) fp WHERE M.IdPropiedad = @IdPropiedad').then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
         await client.close()
         if(result[0] == null) return null
-        foto = await getFotosPropiedad(result[0].IdPropiedad);
-
-        result[0].Foto = foto
         return formatMatchsByPropId(result[0])
     }catch (err){
         console.dir(err)
@@ -105,7 +99,7 @@ async function updateMatch(body) {
 }
 
 
-const formatMatchsByPropId = (match) => {
+const formatMatchsByUserId = (match) => {
     return { "userId": match.IdFirebase,
             "idPropiedad": match.IdPropiedad,
             "estado": match.Estado,
@@ -113,65 +107,22 @@ const formatMatchsByPropId = (match) => {
             "tipoHabitacion": match.TipoHabitacion,
             "tamanoHabitacion": match.TamanoHabitacion,
             "ciudad": match.Ciudad,
+            "foto": match.Foto,
             "nombre": match.Nombre,
-            "edad": match.Edad,
-            "foto": match.Foto
+            "edad": match.Edad
         }
 }
 
-
-const formatMatchsByUserId = (match) => {
+const formatMatchsByPropId = (match) => {
     return { "userId": match.IdFirebase,
             "idPropiedad": match.IdPropiedad,
             "estado": match.Estado,
             "nombre": match.Nombre,
-            "Edad": match.Edad,
-            "Genero": match.Genero,
-            "Dedicacion": match.Dedicacion,
-            "Foto": match.Foto
+            "edad": match.Edad,
+            "genero": match.Genero,
+            "dedicacion": match.Dedicacion,
+            "foto": match.Foto
         }
-}
-
-const getFotosPropiedad = async (propertyId) => {
-    let result;
-    const client = await sql.getConnection()
-    try{
-        let queryPrepared = await client.request()
-        // Parametros a insertar
-        queryPrepared.input('propertyId', mssql.NVarChar, propertyId)
-        // Ejecución de la query
-        await queryPrepared.query('SELECT TOP 1 Value FROM FotoPropiedad WHERE IdPropiedad = @propertyId').then((response) => {
-            result = response.recordset[0].Value
-        })
-        // Cerramos la conexión
-        await client.close()
-        if(result == null) return null
-        return result
-    }catch (err){
-        console.dir(err)
-        return err
-    }
-}
-
-const getFotosPerfil = async (userId) => {
-    let result;
-    const client = await sql.getConnection()
-    try{
-        let queryPrepared = await client.request()
-        // Parametros a insertar
-        queryPrepared.input('userId', mssql.NVarChar, userId)
-        // Ejecución de la query
-        await queryPrepared.query('SELECT TOP 1 Value FROM FotoPerfil WHERE IdFirebase = @userId').then((response) => {
-            result = response.recordset[0].Value
-        })
-        // Cerramos la conexión
-        await client.close()
-        if(result == null) return null
-        return result
-    }catch (err){
-        console.dir(err)
-        return err
-    }
 }
 
 
