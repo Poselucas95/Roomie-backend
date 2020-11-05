@@ -44,4 +44,13 @@ async function updateUser(body) {
   }
 }
 
-module.exports = { getUser, createUser, updateUser };
+async function verifyUser(body) {
+  try {
+    result = await userService.verifyUser(body.dni, body.user);
+    return { result: result, code: 200 };
+  } catch (error) {
+    res.send("No se pudo realizar la verificación");
+  }
+}
+
+module.exports = { getUser, createUser, updateUser,verifyUser };

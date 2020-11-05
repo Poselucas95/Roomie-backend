@@ -36,4 +36,16 @@ router.put('/', async (req, res) => {
 });
 
 
+/* VERIFY fotos */
+
+router.post('/verify', async (req, res) => {
+  try{
+    var response = await userController.verifyUser(req.body)
+    res.status(response.code).send(response.result)
+  }catch (err){
+    res.send("No se pudo realizar la verificación")
+  }
+})
+
+
 module.exports = router;

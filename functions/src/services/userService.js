@@ -164,6 +164,12 @@ const getFotos = async (userId) => {
 }
 
 
+const verifyUser = async (dni, user) => {
+    let result;
+    // Aca hace la magia.. y devolvete que son la misma persona, true or false.
+}
+
+
 // Formatea la salida de json que reciben desde front para GET
 const formatUser = (user) => {
     return { "userId": user.IdFirebase,
@@ -278,4 +284,4 @@ const getParams = (body, user) => {
 }
 
 
-module.exports = {createUser, getUser, updateUser}
+module.exports = {createUser, getUser, updateUser, verifyUser}
