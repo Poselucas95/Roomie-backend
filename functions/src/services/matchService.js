@@ -15,7 +15,6 @@ const getParams = (body) => {
 
 async function getMatchsByUserId(userId) {
     let result;
-    let response;
     const client = await sql.getConnection()
     try{
         let queryPrepared = await client.request()
@@ -28,8 +27,9 @@ async function getMatchsByUserId(userId) {
         // Cerramos la conexión
         await client.close()
         if(result[0] == null) return null
-        result.forEach(item => response.push(formatMatchsByUserId(item)))
-        return response
+        const resultado = []
+        result.forEach(item => resultado.push(formatMatchsByUserId(item)))
+        return resultado
     }catch (err){
         console.dir(err)
         return err
@@ -49,8 +49,9 @@ async function getMatchsByPropId(propertyId) {
         // Cerramos la conexión
         await client.close()
         if(result[0] == null) return null
-        result.forEach(item => response.push(formatMatchsByPropId(item)))
-        return response
+        const resultado = []
+        result.forEach(item => resultado.push(formatMatchsByPropId(item)))
+        return resultado
     }catch (err){
         console.dir(err)
         return err
