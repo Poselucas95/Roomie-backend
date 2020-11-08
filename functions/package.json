@@ -2,7 +2,7 @@
   "name": "Roomie-backend",
   "scripts": {
     "lint": "eslint .",
-    "serve": "firebase emulators:start --only functions",
+    "serve": "firebase emulators:start --only functions:rumiapi",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions:rumiapi",
