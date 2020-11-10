@@ -19,7 +19,7 @@ const getDiscovery = async (body) => {
         var parameters = getParams(body)
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
-        await queryPrepared.query("SELECT pr.AlquilerMensual, pr.Direccion, pr.TituloAnuncio, pr.IdFirebase as idPropietario, pr.IdPropiedad FROM Propiedad pr WHERE pr.IdPropiedad NOT iN (SELECT IdPropiedad from Matchs WHERE IdFirebase = IdFirebase) AND pr.IdPropiedad NOT iN (SELECT IdPropiedad from Rechazos WHERE IdFirebase = @IdFirebase)").then((response) => {
+        await queryPrepared.query("SELECT CONCAT(p.Nombre, ', ', p.Edad) AS nombrePropietario, fp.Value as Foto, pr.AlgoMas AS descripcion, pr.AlquilerMensual, pr.Barrio, pr.Ciudad, pr.TituloAnuncio, pr.IdFirebase as idPropietario, pr.IdPropiedad FROM Propiedad pr LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM  FotoPropiedad f WHERE  pr.IdPropiedad = f.IdPropiedad) fp WHERE pr.IdPropiedad NOT iN (SELECT IdPropiedad from Matchs WHERE IdFirebase = @IdFirebase) AND pr.IdPropiedad NOT iN (SELECT IdPropiedad from Rechazos WHERE IdFirebase = @IdFirebase)").then((response) => {
             result = response.recordset
         })
         await client.close()
@@ -38,9 +38,13 @@ const getDiscovery = async (body) => {
 const formatDiscover = (result) => {
     return { "idPropietario": result.idPropietario,
             "idPropiedad": result.IdPropiedad,
+            "foto": result.Foto,
+            "resumenPropietario": result.NombrePropietario,
             "alquiler": result.AlquilerMensual,
-            "direccion": result.Direccion,
             "titulo": result.TituloAnuncio,
+            "desc": result.descripcion,
+            "barrio": result.Barrio,
+            "ciudad": result.Ciudad
         }
 }
 
