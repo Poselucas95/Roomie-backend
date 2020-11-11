@@ -15,6 +15,16 @@ async function getMatchsByPropId(propertyId) {
         return { 'result': 'Se produjo un error al buscar el match', 'code': 500}
     }
 }
+async function getMatchsPending(propertyId) {
+    try{
+        match = await matchService.getMatchsPending(propertyId)
+        if(match == null) return { 'result': "No hay match con el property ID solicitado", 'code': 404}
+        return { 'result': match, 'code': 200}
+    }catch(error){
+        console.dir(error)
+        return { 'result': 'Se produjo un error al buscar el match', 'code': 500}
+    }
+}
 
 async function getMatchsByUserId(userId) {
     try{
@@ -57,4 +67,4 @@ async function updateMatch(body) {
 }
 
 
-module.exports = {getMatchsByUserId, getMatchsByPropId, createMatch, updateMatch}
+module.exports = {getMatchsByUserId, getMatchsByPropId, createMatch, updateMatch, getMatchsPending}

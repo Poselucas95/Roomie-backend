@@ -7,12 +7,23 @@ var matchController = require('../src/controllers/matchController')
 /* GET matchs by propertyID. */
 // Este trae TODOS los match que la PROPIEDAD tiene.
 router.get('/prop/:propertyId', async (req, res) => {
-  if(req.params.propertyId && req.params.propertyId == null) res.status(400).send('Error al solicitar el match. Falta property ID')
+  if(req.params.propertyId && req.params.propertyId == null) res.status(400).send('Error al solicitar los matchs. Falta property ID')
   try{
     var response = await matchController.getMatchsByPropId(req.params.propertyId)
     res.status(response.code).send(response.result)
   }catch (err){
-    res.send("Error al buscar la asd", 500)
+    res.send("Error al buscar los matchs", 500)
+  }
+});
+/* GET matchs pendientes by propertyID. */
+// Este trae TODOS los match pendientes que la PROPIEDAD tiene.
+router.get('/prop/pending/:propertyId', async (req, res) => {
+  if(req.params.propertyId && req.params.propertyId == null) res.status(400).send('Error al solicitar los matchs. Falta property ID')
+  try{
+    var response = await matchController.getMatchsPending(req.params.propertyId)
+    res.status(response.code).send(response.result)
+  }catch (err){
+    res.send("Error al buscar los matchs", 500)
   }
 });
 

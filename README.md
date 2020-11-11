@@ -84,6 +84,7 @@ Made with :heart:
 [`/api/match/user/{userId}`](#buscar-match-by-UserId)                | GET    | Buscar un match por id de usuario
 [`/api/match/`](#crear-match)                                        | POST   | Crear un match
 [`/api/match/`](#modificar-match)                                    | PUT    | Modificar un match
+[`/api/match/prop/pending`](#Obtener-Matchs-Pendientes-by-propId)    | GET    | Obtener cantidad de matchs pendientes
 [`/api/reject/`](#crear-rechazo)                                     | POST   | Crear un rechazo
 
 ## Ejemplos
@@ -364,6 +365,17 @@ Made with :heart:
 "Genero": "0",
 "Dedicacion": "0",
 "Foto": "foto1"
+}
+ ```
+### Obtener Matchs Pendientes by propId
+
+###### Response:
+```javascript
+{
+"Tienes 1 interesado en la seccion favoritos"
+}
+{
+"Tienes 2 interesados en la seccion favoritos"
 }
  ```
 

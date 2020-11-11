@@ -57,7 +57,32 @@ async function getMatchsByPropId(propertyId) {
         return err
     }
 }
-
+async function getMatchsPending(propertyId) {
+    let result;
+    const client = await sql.getConnection()
+    try{
+        let queryPrepared = await client.request()
+        // Parametros a insertar
+        queryPrepared.input('IdPropiedad', mssql.Int, propertyId)
+        // Ejecución de la query
+        await queryPrepared.query("SELECT COUNT(IdFirebase) AS Number FROM Matchs WHERE Estado = 'Pendiente' AND IdPropiedad = @IdPropiedad").then((response) => {
+            result = response.recordset
+        })
+        // Cerramos la conexión
+        await client.close()
+        if(result[0] === null) return null
+        if (result[0].Number === 1){
+            resultado = 'Tienes '+ result[0].Number +' interesado en la seccion favoritos';
+        }else{
+            resultado = 'Tienes ' + result[0].Number + ' interesados en la seccion favoritos';
+        }
+        console.log(result[0]);
+        return resultado
+    }catch (err){
+        console.dir(err)
+        return err
+    }
+}
 async function createMatch(body) {
     let result;
     const client = await sql.getConnection()
@@ -131,4 +156,4 @@ const formatMatchsByPropId = (match) => {
 }
 
 
-module.exports = {createMatch, getMatchsByPropId,getMatchsByUserId, updateMatch}
+module.exports = {createMatch, getMatchsByPropId,getMatchsByUserId, updateMatch, getMatchsPending}
