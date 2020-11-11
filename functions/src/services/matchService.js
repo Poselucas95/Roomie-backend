@@ -21,7 +21,7 @@ async function getMatchsByUserId(userId) {
         // Parametros a insertar
         queryPrepared.input('IdFirebase', mssql.NVarChar, userId)
         // Ejecución de la query
-        await queryPrepared.query('SELECT M.*, PR.IdFirebase as idPropietario, PR.AlquilerMensual,PR.TipoHabitacion, PR.TamanoHabitacion, PR.Ciudad , fp.Value as Foto, P.Nombre, P.Edad FROM Matchs M  INNER JOIN Propiedad PR ON PR.IdPropiedad = M.IdPropiedad INNER JOIN Perfil P ON P.IdFirebase = PR.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM   FotoPropiedad f WHERE  M.IdPropiedad = f.IdPropiedad) fp WHERE M.IdFirebase =  @IdFirebase').then((response) => {
+        await queryPrepared.query('SELECT M.*, PR.IdFirebase as idPropietario, PR.AlquilerMensual,PR.TipoHabitacion, PR.TamanoHabitacion, PR.Ciudad , PR.Barrio fp.Value as Foto, P.Nombre, P.Edad FROM Matchs M  INNER JOIN Propiedad PR ON PR.IdPropiedad = M.IdPropiedad INNER JOIN Perfil P ON P.IdFirebase = PR.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM   FotoPropiedad f WHERE  M.IdPropiedad = f.IdPropiedad) fp WHERE M.IdFirebase =  @IdFirebase').then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
@@ -137,6 +137,7 @@ const formatMatchsByUserId = (match) => {
             "tipoHabitacion": match.TipoHabitacion,
             "tamanoHabitacion": match.TamanoHabitacion,
             "ciudad": match.Ciudad,
+            "barrio": match.Barrio,
             "foto": match.Foto,
             "nombre": match.Nombre,
             "edad": match.Edad
