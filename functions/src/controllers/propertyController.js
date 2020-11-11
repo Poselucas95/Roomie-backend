@@ -26,7 +26,7 @@ async function createProperty(body) {
         if(property != null) return { 'result': "La propiedad ya existe", 'code': 404}
         response = await propertyService.createProperty(body)
         if(response.originalError && response.originalError.info.name === "ERROR" ) return { 'result': 'Ha ocurrido un error', "code": 400}
-        return { 'result': response, 'code': 200}
+        return {  'result': response , 'code': 200}
     }catch(error){
         console.dir(error)
         return { 'result': 'Se produjo un error al registrar la propiedad', 'code': 500}

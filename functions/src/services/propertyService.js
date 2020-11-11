@@ -94,12 +94,12 @@ async function createProperty(body) {
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
         await queryPrepared.query('INSERT INTO Propiedad (IdFirebase, Ciudad, Barrio, Direccion, TipoHabitacion, TipoCama, TamanoHabitacion, TamanoPropiedad, Chicas, Chicos, Otros, HabitacionesInd, HabitacionesDob, BanosCompletos, Toilettes, TV, WIFI, ACC, Calefaccion, Piscina, PropiedadACcesible , BanoPrivado, ACCHabitacion, Balcon, Fumar, Mascotas, Parejas, LGTB, AlquilerMensual, DepositoGarantia, ServicioLimpieza, Expensas, TituloAnuncio, AlgoMas, Preferencia, EdadMin, EdadMax, ActividadPrincipal) VALUES (@IdFirebase, @Ciudad, @Barrio, @Direccion, @TipoHabitacion, @TipoCama, @TamanoHabitacion, @TamanoPropiedad, @Chicas, @Chicos, @Otros, @HabitacionesInd, @HabitacionesDob, @BanosCompletos, @Toilettes, @TV, @WIFI, @ACC, @Calefaccion, @Piscina, @PropiedadACcesible , @BanoPrivado, @ACCHabitacion, @Balcon, @Fumar, @Mascotas, @Parejas, @LGTB, @AlquilerMensual, @DepositoGarantia, @ServicioLimpieza, @Expensas, @TituloAnuncio, @AlgoMas, @Preferencia, @EdadMin, @EdadMax, @ActividadPrincipal)').then((response) => {
-            result = response
         })
         const insertProperty = await getProperty(body.userId)
         await client.close()
         await insertFotos(insertProperty.idPropiedad, body.fotos)
         await updatePerfilProp(body.userId)
+        result = insertProperty;
         // Cerramos la conexión
         return result
     }catch (err){
