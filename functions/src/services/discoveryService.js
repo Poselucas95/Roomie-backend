@@ -27,7 +27,8 @@ const getDiscovery = async (body) => {
         // Formateamos la respuesta
         const resultado = []
         result.forEach(item => resultado.push(formatDiscover(item)))
-        return resultado
+        const object = { "propiedades": resultado}
+        return object
     }catch (err){
         console.dir(err)
         return err
