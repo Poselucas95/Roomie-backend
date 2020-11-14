@@ -7,6 +7,8 @@ const mssql = require( "mssql" );
 const getParams = (body) => {
     return [
         { name: 'IdFirebase', sqltype: mssql.NVarChar, value: body.userId},        
+        { name: 'Barrio', sqltype: mssql.NVarChar, value: body.barrio},        
+        { name: 'Page', sqltype: mssql.Int, value: ((body.page -1) + 10 )},        
     ];
 }
 
@@ -19,7 +21,7 @@ const getDiscovery = async (body) => {
         var parameters = getParams(body)
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
-        await queryPrepared.query("SELECT CONCAT(p.Nombre, ', ', p.Edad) AS nombrePropietario, fp.Value as Foto, pr.AlgoMas AS descripcion, pr.AlquilerMensual, pr.Barrio, pr.Ciudad, pr.TituloAnuncio, pr.IdFirebase as idPropietario, pr.IdPropiedad FROM Propiedad pr LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM  FotoPropiedad f WHERE  pr.IdPropiedad = f.IdPropiedad) fp WHERE pr.IdPropiedad NOT iN (SELECT IdPropiedad from Matchs WHERE IdFirebase = @IdFirebase) AND pr.IdPropiedad NOT iN (SELECT IdPropiedad from Rechazos WHERE IdFirebase = @IdFirebase)").then((response) => {
+        await queryPrepared.query("SELECT CONCAT(p.Nombre, ', ', p.Edad) AS nombrePropietario, fp.Value as Foto, pr.AlgoMas AS descripcion, pr.AlquilerMensual, pr.Barrio, pr.Ciudad, pr.TituloAnuncio, pr.IdFirebase as idPropietario, pr.IdPropiedad FROM Propiedad pr LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM  FotoPropiedad f WHERE  pr.IdPropiedad = f.IdPropiedad) fp WHERE pr.IdPropiedad NOT iN (SELECT IdPropiedad from Matchs WHERE IdFirebase = @IdFirebase) AND pr.IdPropiedad NOT iN (SELECT IdPropiedad from Rechazos WHERE IdFirebase = @IdFirebase) AND pr.Barrio like @Barrio ORDER BY nombrePropietario OFFSET @Page ROWS FETCH NEXT 10 ROWS ONLY").then((response) => {
             result = response.recordset
         })
         await client.close()
