@@ -65,18 +65,18 @@ async function getMatchsPending(propertyId) {
         // Parametros a insertar
         queryPrepared.input('IdPropiedad', mssql.Int, propertyId)
         // Ejecución de la query
-        await queryPrepared.query("SELECT COUNT(IdFirebase) AS Number FROM Matchs WHERE Estado = 'Pendiente' AND IdPropiedad = @IdPropiedad").then((response) => {
+        await queryPrepared.query("SELECT COUNT(IdFirebase) AS notificacion FROM Matchs WHERE Estado = 'Pendiente' AND IdPropiedad = @IdPropiedad").then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
         await client.close()
         if(result[0] === null) return null
-        if (result[0].Number === 1){
-            result[0].Number = 'Tienes '+ result[0].Number +' interesado en la seccion favoritos';
-        }else if (result[0].Number === 0){
-            result[0].Number = 'No tienes interesados en la seccion favoritos';
+        if (result[0].notificacion === 1){
+            result[0].notificacion = 'Tienes '+ result[0].notificacion +' interesado en la seccion favoritos';
+        }else if (result[0].notificacion === 0){
+            result[0].notificacion = 'No tienes interesados en la seccion favoritos';
         }else{
-            result[0].Number = 'Tienes '+ result[0].Number +' interesados en la seccion favoritos';
+            result[0].notificacion = 'Tienes '+ result[0].notificacion +' interesados en la seccion favoritos';
         }
         // console.log(result[0]);
         return result
