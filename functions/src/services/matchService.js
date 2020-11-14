@@ -72,12 +72,14 @@ async function getMatchsPending(propertyId) {
         await client.close()
         if(result[0] === null) return null
         if (result[0].Number === 1){
-            resultado = 'Tienes '+ result[0].Number +' interesado en la seccion favoritos';
+            result[0].Number = 'Tienes '+ result[0].Number +' interesado en la seccion favoritos';
+        }else if (result[0].Number === 0){
+            result[0].Number = 'No tienes interesados en la seccion favoritos';
         }else{
-            resultado = 'Tienes ' + result[0].Number + ' interesados en la seccion favoritos';
+            result[0].Number = 'Tienes '+ result[0].Number +' interesados en la seccion favoritos';
         }
-        console.log(result[0]);
-        return resultado
+        // console.log(result[0]);
+        return result
     }catch (err){
         console.dir(err)
         return err
