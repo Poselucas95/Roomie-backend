@@ -71,15 +71,13 @@ async function getMatchsPending(propertyId) {
         // Cerramos la conexión
         await client.close()
         if(result[0] === null) return null
-        if (result[0].notificacion === 1){
-            result[0].notificacion = 'Tienes '+ result[0].notificacion +' interesado en la seccion favoritos';
-        }else if (result[0].notificacion === 0){
-            result[0].notificacion = 'No tienes interesados en la seccion favoritos';
+        if(result[0].notificacion == 0){
+            return { "notificacion":  'No tienes interesados en la seccion favoritos' }
+        }else if(result[0].notificacion == 1){
+            return { "notificacion":  'Tienes 1 interesado en la seccion favoritos' }
         }else{
-            result[0].notificacion = 'Tienes '+ result[0].notificacion +' interesados en la seccion favoritos';
+            return { "notificacion":  'Tienes '+ result[0].notificacion +' interesados en la seccion favoritos' }
         }
-        // console.log(result[0]);
-        return result
     }catch (err){
         console.dir(err)
         return err
