@@ -39,7 +39,7 @@ async function getMatchsByUserId(userId) {
 
 async function createMatch(body) {
     try{
-        match = await matchService.getMatchsByUserId(body.userId)
+        match = await matchService.existMatch(body.userId, body.idPropiedad)
         if(match != null) return { 'result': "El match ya existe", 'code': 404}
         response = await matchService.createMatch(body)
         if(response.originalError && response.originalError.info.name === "ERROR" ) return { 'result': 'Ha ocurrido un error', "code": 400}
@@ -53,10 +53,9 @@ async function createMatch(body) {
 async function updateMatch(body) {
     try{
         // Me traigo el match para verificar que existe.
-        matchByUser = await matchService.getMatchsByUserId(body.userId)
-        matchByProp = await matchService.getMatchsByPropId(body.idPropiedad)
+        auxMatch = await matchService.existMatch(body.userId, body.idPropiedad)
         // Si el match existe, devolvemos result y codigo 404.
-        if(matchByUser == null || matchByProp == null ) return { 'result': "El match no existe", 'code': 404}
+        if(auxMatch == null) return { 'result': "El match no existe", 'code': 404}
         response = await matchService.updateMatch(body, matchByUser)
         if(response.originalError && response.originalError.info.name === "ERROR" ) return { 'result': 'Ha ocurrido un error', "code": 400}
         return { 'result': response, 'code': 200}

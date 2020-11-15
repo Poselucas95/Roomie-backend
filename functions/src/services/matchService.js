@@ -127,6 +127,28 @@ async function updateMatch(body) {
     }
 }
 
+async function existMatch(userId, propId) {
+    let result;
+    const client = await sql.getConnection()
+    try{
+        let queryPrepared = await client.request()
+        // Parametros a insertar
+        queryPrepared.input('IdFirebase', mssql.NVarChar, userId)
+        queryPrepared.input('IdPropiedad', mssql.NVarChar, propId)
+        // Ejecución de la query
+        await queryPrepared.query('SELECT * FROM Matchs where IdFirebase = @IdFirebase AND IdPropiedad = @IdPropiedad').then((response) => {
+            result = response.recordset
+        })
+        // Cerramos la conexión
+        await client.close()
+        if(result[0] == null) return null
+        return result[0]
+    }catch (err){
+        console.dir(err)
+        return err
+    }
+}
+
 
 const formatMatchsByUserId = (match) => {
     return { "userId": match.IdFirebase,
@@ -157,4 +179,4 @@ const formatMatchsByPropId = (match) => {
 }
 
 
-module.exports = {createMatch, getMatchsByPropId,getMatchsByUserId, updateMatch, getMatchsPending}
+module.exports = {createMatch, getMatchsByPropId,getMatchsByUserId, updateMatch, getMatchsPending, existMatch}

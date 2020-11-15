@@ -17,4 +17,17 @@ async function getDiscovery(body) {
     }
 }
 
-module.exports = {getDiscovery}
+
+async function getPreviewProp(propId) {
+    try{
+        response = await discoveryService.getPropertyPreview(propId)
+        if(response.originalError && response.originalError.info.name === "ERROR" ) return { 'result': 'Ha ocurrido un error', "code": 400}
+        return { 'result': response, 'code': 200}
+    }catch(error){
+        console.dir(error)
+        return { 'result': 'Se produjo un error al obtener el preview', 'code': 500}
+    }
+}
+
+
+module.exports = {getDiscovery, getPreviewProp}
