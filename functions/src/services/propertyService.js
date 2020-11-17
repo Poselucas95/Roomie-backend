@@ -255,15 +255,15 @@ const formatProperty = (property) => {
 }
 }
 
-async function getPropertyDetails(userId) {
+async function getPropertyDetails(propId) {
     let result;
     const client = await sql.getConnection()
     try{
         let queryPrepared = await client.request()
         // Parametros a insertar
-        queryPrepared.input('userId', mssql.NVarChar, userId)
+        queryPrepared.input('propId', mssql.NVarChar, propId)
         // Ejecución de la query
-        await queryPrepared.query('SELECT * FROM Propiedad WHERE IdFirebase = @userId').then((response) => {
+        await queryPrepared.query('SELECT * FROM Propiedad WHERE IdPropiedad = @propId').then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión

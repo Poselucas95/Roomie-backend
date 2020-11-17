@@ -17,9 +17,9 @@ async function getProperty(userId) {
     
 }
 
-async function getPropertyDetails(userId) {
+async function getPropertyDetails(propId) {
     try{
-        property = await propertyService.getPropertyDetails(userId)
+        property = await propertyService.getPropertyDetails(propId)
         return { 'result': property, 'code': 200}
     }catch(error){
         console.dir(error)
