@@ -289,7 +289,7 @@ const formatDetails = (property) => {
             "tipoHabitacion": property.TipoHabitacion,
             "tipoCama": property.TipoCama,
             "tamano": "Habitación " + property.TamanoHabitacion + "m2" + "\n" + "Propiedad " + property.TamanoPropiedad + "m2",
-            "companeros": formatCompas(property.Chicas, "Chica") + formatCompas(property.Chicos, "Chico") + property.Chicos(property.Otros, "Otros"),
+            "companeros": formatCompas(property.Chicas, "Chica") + formatCompas(property.Chicos, "Chico") + formatCompas(property.Otros, "Otros"),
             "habitaciones": property.HabitacionesInd + " Habitacion/es individual/es" + "\n" + property.HabitacionesDob + " Habitacion/es doble/s",
             "banos": property.BanosCompletos + " Baño/s completo/s" + "\n" + property.Toilettes + " Toilette/s",
             "comodidadProp": {
@@ -329,7 +329,7 @@ const formatCompas = (genero, texto) => {
         return ""
     }
     if(texto == "Otros" || genero == 1){
-        return texto + " " + genero + "\n"
+        return texto + " " + genero + " \n"
     }
     return texto + "/s " + genero + "\n"
 }
