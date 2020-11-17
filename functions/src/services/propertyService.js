@@ -288,8 +288,8 @@ const formatDetails = (property) => {
             "barrio": property.Barrio,
             "tipoHabitacion": property.TipoHabitacion,
             "tipoCama": property.TipoCama,
-            "tamano": "Habitación " + property.TamanoHabitacion + "\n" + "Propiedad " + property.TamanoPropiedad,
-            "companeros": "Chica/s " + property.Chicas + "\n" + "Chico/s " + property.Chicos + "\n" + "Otros " + property.Otros,
+            "tamano": "Habitación " + property.TamanoHabitacion + "m2" + "\n" + "Propiedad " + property.TamanoPropiedad + "m2",
+            "companeros": formatCompas(property.Chicas, "Chica") + formatCompas(property.Chicos, "Chico") + property.Chicos(property.Otros, "Otros"),
             "habitaciones": property.HabitacionesInd + " Habitacion/es individual/es" + "\n" + property.HabitacionesDob + " Habitacion/es doble/s",
             "banos": property.BanosCompletos + " Baño/s completo/s" + "\n" + property.Toilettes + " Toilette/s",
             "comodidadProp": {
@@ -321,6 +321,17 @@ const formatDetails = (property) => {
             "preferenciaCompanero": property.Preferencia + "\n" + property.EdadMin + " a " + property.EdadMax + " años",
             "actividadPrincipal": property.ActividadPrincipal,
         }
+}
+
+
+const formatCompas = (genero, texto) => {
+    if(genero == 0){
+        return ""
+    }
+    if(texto == "Otros" || genero == 1){
+        return texto + " " + genero + "\n"
+    }
+    return texto + "/s " + genero + "\n"
 }
 
 const getFotos = async (propertyId) => {
