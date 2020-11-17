@@ -11,12 +11,23 @@ async function getProperty(userId) {
         return { 'result': property, 'code': 200}
     }catch(error){
         console.dir(error)
-        return { 'result': 'Se produjo un error al buscar el usuario', 'code': 500}
+        return { 'result': 'Se produjo un error al buscar la propiedad', 'code': 500}
     }
 
     
 }
 
+async function getPropertyDetails(userId) {
+    try{
+        property = await propertyService.getPropertyDetails(userId)
+        return { 'result': property, 'code': 200}
+    }catch(error){
+        console.dir(error)
+        return { 'result': 'Se produjo un error al buscar la propiedad', 'code': 500}
+    }
+
+    
+}
 
 async function createProperty(body) {
     try{
@@ -55,4 +66,4 @@ async function updateProperty(body) {
 
 
 
-module.exports = {getProperty, createProperty, updateProperty}
+module.exports = {getProperty, createProperty, updateProperty, getPropertyDetails}

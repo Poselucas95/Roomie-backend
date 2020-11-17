@@ -203,13 +203,89 @@ const deleteFotos = async (propertyId) => {
 }
 
 
+
+const formatProperty = (property) => {
+    return { "userId": property.IdFirebase,
+    "idPropiedad": property.IdPropiedad,
+    "fotos": property.Fotos,
+    "ciudad": property.Ciudad,
+    "barrio": property.Barrio,
+    "direccion": property.Direccion,
+    "tipoHabitacion": property.TipoHabitacion,
+    "tipoCama": property.TipoCama,
+    "tamanoHabitacion": property.TamanoHabitacion,
+    "tamanoPropiedad": property.TamanoPropiedad,
+    "chicas": property.Chicas,
+    "chicos": property.Chicos,
+    "otros": property.Otros,
+    "habitacionesInd": property.HabitacionesInd,
+    "habitacionesDob": property.HabitacionesDob,
+    "banosCompletos": property.BanosCompletos,
+    "toilettes": property.Toilettes,
+    "comodidadProp": {
+        "tv": property.TV,
+        "wifi": property.WIFI,
+        "acc": property.ACC,
+        "calefaccion": property.Calefaccion,
+        "piscina": property.Piscina,
+        "propidadAccesible": property.PropiedadACcesible
+    },
+    "comodidadHab": {
+        "banoPrivado": property.BanoPrivado,
+        "accHabitacion": property.ACCHabitacion,
+        "balcon": property.Balcon,
+    },
+    "normas": {
+        "fumar": property.Fumar,
+        "mascotas": property.Mascotas,
+        "parejas": property.Parejas,
+        "lgtb": property.LGTB,
+        
+    },
+    "alquilerMensual": property.AlquilerMensual,
+    "depositoGarantia": property.DepositoGarantia,
+    "servicioLimpieza": property.ServicioLimpieza,
+    "expensas": property.Expensas,
+    "tituloAnuncio": property.TituloAnuncio,
+    "algoMas": property.AlgoMas,
+    "preferencia": property.Preferencia,
+    "edadMin": property.EdadMin,
+    "edadMax": property.EdadMax,
+    "actividadPrincipal": property.ActividadPrincipal,
+}
+}
+
+async function getPropertyDetails(userId) {
+    let result;
+    const client = await sql.getConnection()
+    try{
+        let queryPrepared = await client.request()
+        // Parametros a insertar
+        queryPrepared.input('userId', mssql.NVarChar, userId)
+        // Ejecución de la query
+        await queryPrepared.query('SELECT * FROM Propiedad WHERE IdFirebase = @userId').then((response) => {
+            result = response.recordset
+        })
+        // Cerramos la conexión
+        await client.close()
+        if(result[0] == null) return null
+        fotos = await getFotos(result[0].IdPropiedad);
+        fotosArray =[]
+        fotos.forEach(foto => fotosArray.push(foto.Value))
+        result[0].Fotos = fotosArray
+        return formatDetails(result[0])
+    }catch (err){
+        console.dir(err)
+        return err
+    }
+}
+
 const formatDetails = (property) => {
     return { "userId": property.IdFirebase,
             "idPropiedad": property.IdPropiedad,
             "fotos": property.Fotos,
             "ciudad": property.Ciudad,
             "barrio": property.Barrio,
-            "direccion": property.Direccion,
             "tipoHabitacion": property.TipoHabitacion,
             "tipoCama": property.TipoCama,
             "tamano": "Habitación " + property.TamanoHabitacion + "\n" + "Propiedad " + property.TamanoPropiedad,
@@ -247,58 +323,6 @@ const formatDetails = (property) => {
         }
 }
 
-
-const formatProperty = (property) => {
-    return { "userId": property.IdFirebase,
-            "idPropiedad": property.IdPropiedad,
-            "fotos": property.Fotos,
-            "ciudad": property.Ciudad,
-            "barrio": property.Barrio,
-            "direccion": property.Direccion,
-            "tipoHabitacion": property.TipoHabitacion,
-            "tipoCama": property.TipoCama,
-            "tamanoHabitacion": property.TamanoHabitacion,
-            "tamanoPropiedad": property.TamanoPropiedad,
-            "chicas": property.Chicas,
-            "chicos": property.Chicos,
-            "otros": property.Otros,
-            "habitacionesInd": property.HabitacionesInd,
-            "habitacionesDob": property.HabitacionesDob,
-            "banosCompletos": property.BanosCompletos,
-            "toilettes": property.Toilettes,
-            "comodidadProp": {
-                "tv": property.TV,
-                "wifi": property.WIFI,
-                "acc": property.ACC,
-                "calefaccion": property.Calefaccion,
-                "piscina": property.Piscina,
-                "propidadAccesible": property.PropiedadACcesible
-            },
-            "comodidadHab": {
-                "banoPrivado": property.BanoPrivado,
-                "accHabitacion": property.ACCHabitacion,
-                "balcon": property.Balcon,
-            },
-            "normas": {
-                "fumar": property.Fumar,
-                "mascotas": property.Mascotas,
-                "parejas": property.Parejas,
-                "lgtb": property.LGTB,
-                
-            },
-            "alquilerMensual": property.AlquilerMensual,
-            "depositoGarantia": property.DepositoGarantia,
-            "servicioLimpieza": property.ServicioLimpieza,
-            "expensas": property.Expensas,
-            "tituloAnuncio": property.TituloAnuncio,
-            "algoMas": property.AlgoMas,
-            "preferencia": property.Preferencia,
-            "edadMin": property.EdadMin,
-            "edadMax": property.EdadMax,
-            "actividadPrincipal": property.ActividadPrincipal,
-        }
-}
-
 const getFotos = async (propertyId) => {
     let result;
     const client = await sql.getConnection()
@@ -321,4 +345,4 @@ const getFotos = async (propertyId) => {
 }
 
 
-module.exports = {createProperty, getProperty, updateProperty}
+module.exports = {createProperty, getProperty, updateProperty, getPropertyDetails}

@@ -15,6 +15,17 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
+/* GET property. */
+router.get('/details/:userId', async (req, res) => {
+  if(req.params.userId && req.params.userId == null) res.status(400).send('Error al solicitar la propiedad. Falta userID')
+  try{
+    var response = await propertyController.getPropertyDetails(req.params.userId)
+    res.status(response.code).send(response.result)
+  }catch (err){
+    res.send("Error al buscar la propiedad", 500)
+  }
+});
+
 /* CREATE property. */
 router.post('/', async (req, res) => {
   try{
