@@ -203,7 +203,7 @@ const deleteFotos = async (propertyId) => {
 }
 
 
-const formatProperty = (property) => {
+const formatDetails = (property) => {
     return { "userId": property.IdFirebase,
             "idPropiedad": property.IdPropiedad,
             "fotos": property.Fotos,
@@ -243,6 +243,58 @@ const formatProperty = (property) => {
             "tituloAnuncio": property.TituloAnuncio,
             "algoMas": property.AlgoMas,
             "preferenciaCompanero": property.Preferencia + "\n" + property.EdadMin + " a " + property.EdadMax + " años",
+            "actividadPrincipal": property.ActividadPrincipal,
+        }
+}
+
+
+const formatProperty = (property) => {
+    return { "userId": property.IdFirebase,
+            "idPropiedad": property.IdPropiedad,
+            "fotos": property.Fotos,
+            "ciudad": property.Ciudad,
+            "barrio": property.Barrio,
+            "direccion": property.Direccion,
+            "tipoHabitacion": property.TipoHabitacion,
+            "tipoCama": property.TipoCama,
+            "tamanoHabitacion": property.TamanoHabitacion,
+            "tamanoPropiedad": property.TamanoPropiedad,
+            "chicas": property.Chicas,
+            "chicos": property.Chicos,
+            "otros": property.Otros,
+            "habitacionesInd": property.HabitacionesInd,
+            "habitacionesDob": property.HabitacionesDob,
+            "banosCompletos": property.BanosCompletos,
+            "toilettes": property.Toilettes,
+            "comodidadProp": {
+                "tv": property.TV,
+                "wifi": property.WIFI,
+                "acc": property.ACC,
+                "calefaccion": property.Calefaccion,
+                "piscina": property.Piscina,
+                "propidadAccesible": property.PropiedadACcesible
+            },
+            "comodidadHab": {
+                "banoPrivado": property.BanoPrivado,
+                "accHabitacion": property.ACCHabitacion,
+                "balcon": property.Balcon,
+            },
+            "normas": {
+                "fumar": property.Fumar,
+                "mascotas": property.Mascotas,
+                "parejas": property.Parejas,
+                "lgtb": property.LGTB,
+                
+            },
+            "alquilerMensual": property.AlquilerMensual,
+            "depositoGarantia": property.DepositoGarantia,
+            "servicioLimpieza": property.ServicioLimpieza,
+            "expensas": property.Expensas,
+            "tituloAnuncio": property.TituloAnuncio,
+            "algoMas": property.AlgoMas,
+            "preferencia": property.Preferencia,
+            "edadMin": property.EdadMin,
+            "edadMax": property.EdadMax,
             "actividadPrincipal": property.ActividadPrincipal,
         }
 }
