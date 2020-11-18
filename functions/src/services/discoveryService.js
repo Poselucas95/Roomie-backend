@@ -66,10 +66,10 @@ const formatDiscover = (result) => {
             "foto": result.Foto,
             "resumenPropietario": result.nombrePropietario,
             "alquiler": "$" + result.AlquilerMensual,
-            "titulo": result.TituloAnuncio,
-            "desc": result.descripcion,
-            "barrio": result.Barrio,
-            "ciudad": result.Ciudad
+            "titulo": helper.capitalizeFirstLetter(result.TituloAnuncio),
+            "desc": helper.capitalizeFirstLetter(result.descripcion),
+            "barrio": helper.capitalizeLetters(result.Barrio),
+            "ciudad": helper.capitalizeLetters(result.Ciudad)
         }
 }
 
@@ -113,7 +113,6 @@ const formatPreview = (property) => {
             "mascotas": property.Mascotas,
             "parejas": property.Parejas,
             "lgtb": property.LGTB,
-            
         },
         "alquilerMensual": property.AlquilerMensual,
         "depositoGarantia": property.DepositoGarantia,
