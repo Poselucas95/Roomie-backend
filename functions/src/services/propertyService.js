@@ -15,6 +15,8 @@ var dbConfig = {
         },
 };
 
+const helper = require('../helpers/helper')
+
 const getParams = (body) => {
     return [
         { name: 'IdFirebase', sqltype: mssql.NVarChar, value: body.userId},
@@ -208,9 +210,9 @@ const formatProperty = (property) => {
     return { "userId": property.IdFirebase,
     "idPropiedad": property.IdPropiedad,
     "fotos": property.Fotos,
-    "ciudad": property.Ciudad,
-    "barrio": property.Barrio,
-    "direccion": property.Direccion,
+    "ciudad": helper.capitalizeLetters(property.Ciudad),
+    "barrio": helper.capitalizeLetters(property.Barrio),
+    "direccion": helper.capitalizeFirstLetter(property.Direccion),
     "tipoHabitacion": property.TipoHabitacion,
     "tipoCama": property.TipoCama,
     "tamanoHabitacion": property.TamanoHabitacion,
@@ -246,12 +248,12 @@ const formatProperty = (property) => {
     "depositoGarantia": property.DepositoGarantia,
     "servicioLimpieza": property.ServicioLimpieza,
     "expensas": property.Expensas,
-    "tituloAnuncio": property.TituloAnuncio,
-    "algoMas": property.AlgoMas,
-    "preferencia": property.Preferencia,
+    "tituloAnuncio": helper.capitalizeFirstLetter(property.TituloAnuncio),
+    "algoMas": property.AlgoMas.charAt(0).toUpperCase() + property.AlgoMas.slice(1),
+    "preferencia": helper.capitalizeFirstLetter(property.Preferencia),
     "edadMin": property.EdadMin,
     "edadMax": property.EdadMax,
-    "actividadPrincipal": property.ActividadPrincipal,
+    "actividadPrincipal": helper.capitalizeFirstLetter(property.ActividadPrincipal),
 }
 }
 
@@ -284,8 +286,8 @@ const formatDetails = (property) => {
     return { "userId": property.IdFirebase,
             "idPropiedad": property.IdPropiedad,
             "fotos": property.Fotos,
-            "ciudad": property.Ciudad,
-            "barrio": property.Barrio,
+            "ciudad": helper.capitalizeLetters(property.Ciudad),
+            "barrio": helper.capitalizeLetters(property.Barrio),
             "tipoHabitacion": property.TipoHabitacion,
             "tipoCama": property.TipoCama,
             "tamano": "Habitación " + property.TamanoHabitacion + "m2" + "\n" + "Propiedad " + property.TamanoPropiedad + "m2",
@@ -316,10 +318,10 @@ const formatDetails = (property) => {
             "depositoGarantia": property.DepositoGarantia,
             "servicioLimpieza": property.ServicioLimpieza,
             "expensas": property.Expensas,
-            "tituloAnuncio": property.TituloAnuncio,
-            "algoMas": property.AlgoMas,
+            "tituloAnuncio": helper.capitalizeLetters(property.TituloAnuncio),
+            "algoMas": property.AlgoMas.charAt(0).toUpperCase() + property.AlgoMas.slice(1),
             "preferenciaCompanero": property.Preferencia + "\n" + property.EdadMin + " a " + property.EdadMax + " años",
-            "actividadPrincipal": property.ActividadPrincipal,
+            "actividadPrincipal": helper.capitalizeFirstLetter(property.ActividadPrincipal),
         }
 }
 

@@ -16,6 +16,8 @@ var dbConfig = {
         },
 };
 
+const helper = require('../helpers/helper')
+
 async function getUser(userId) {
     let result;
     const client = await sql.getConnection()
@@ -173,16 +175,16 @@ const verifyUser = async (dni, user) => {
 // Formatea la salida de json que reciben desde front para GET
 const formatUser = (user) => {
     return { "userId": user.IdFirebase,
-            "nombre": user.Nombre,
-            "apellido": user.Apellido,
+            "nombre": helper.capitalizeLetters(user.Nombre),
+            "apellido": helper.capitalizeLetters(user.Apellido),
             "edad": user.Edad,
             "dni": user.Dni,
             "email": user.Mail,
-            "apodo": user.Apodo,
+            "apodo": helper.capitalizeFirstLetter(user.Apodo),
             "esPropietario": user.EsPropietario,
             "tienePropiedad": user.TienePropiedad,
-            "genero": user.Genero,
-            "dedicacion": user.Dedicacion,
+            "genero": helper.capitalizeFirstLetter(user.Genero),
+            "dedicacion": helper.capitalizeFirstLetter(user.Dedicacion),
             "fotos": user.Fotos,
             "personalidad": {
                 "activo": user.Activo,
@@ -224,11 +226,11 @@ const formatUser = (user) => {
                 "romanticas": user.Romanticas,
                 "cienciaFiccion": user.CienciaFiccion
             },
-            "instagram": user.Instagram,
-            "twitter": user.Twitter,
-            "linkedin": user.LinkedIn,
-            "facebook": user.Facebook,
-            "descripcion": user.Descripcion
+            "instagram": helper.capitalizeFirstLetter(user.Instagram),
+            "twitter": helper.capitalizeFirstLetter(user.Twitter),
+            "linkedin": helper.capitalizeFirstLetter(user.LinkedIn),
+            "facebook": helper.capitalizeFirstLetter(user.Facebook),
+            "descripcion": user.Descripcion.charAt(0).toUpperCase() + user.Descripcion.slice(1)
         }
 }
 

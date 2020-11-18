@@ -3,6 +3,7 @@
 /* eslint-disable promise/always-return */
 const sql = require('../database/sql')
 const mssql = require( "mssql" );
+const helper = require('../helpers/helper')
 
 const getParams = (body) => {
     return [
@@ -153,15 +154,15 @@ async function existMatch(userId, propId) {
 const formatMatchsByUserId = (match) => {
     return { "userId": match.IdFirebase,
             "idPropiedad": match.IdPropiedad,
-            "estado": match.Estado,
+            "estado": helper.capitalizeFirstLetter(match.Estado),
             "idPropietario": match.idPropietario,
             "alquilerMensual": match.AlquilerMensual,
             "tipoHabitacion": match.TipoHabitacion,
             "tamanoHabitacion": match.TamanoHabitacion,
-            "ciudad": match.Ciudad,
-            "barrio": match.Barrio,
+            "ciudad": helper.capitalizeLetters(match.Ciudad),
+            "barrio": helper.capitalizeLetters(match.Barrio),
             "foto": match.Foto,
-            "nombre": match.Nombre,
+            "nombre": helper.capitalizeLetters(match.Nombre),
             "edad": match.Edad
         }
 }
@@ -169,11 +170,11 @@ const formatMatchsByUserId = (match) => {
 const formatMatchsByPropId = (match) => {
     return { "userId": match.IdFirebase,
             "idPropiedad": match.IdPropiedad,
-            "estado": match.Estado,
-            "nombre": match.Nombre,
+            "estado": helper.capitalizeFirstLetter(match.Estado),
+            "nombre": helper.capitalizeLetters(match.Nombre),
             "edad": match.Edad,
-            "genero": match.Genero,
-            "dedicacion": match.Dedicacion,
+            "genero": helper.capitalizeFirstLetter(match.Genero),
+            "dedicacion": helper.capitalizeFirstLetter(match.Dedicacion),
             "foto": match.Foto
         }
 }

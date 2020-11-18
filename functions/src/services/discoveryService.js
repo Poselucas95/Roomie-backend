@@ -3,7 +3,7 @@
 /* eslint-disable promise/always-return */
 const sql = require('../database/sql')
 const mssql = require( "mssql" );
-
+const helper = require('../helpers/helper')
 const getParams = (body) => {
     const page = (body.page - 1) * 10
     return [
@@ -78,12 +78,12 @@ const formatPreview = (property) => {
     return {
         "propietario": {
             "userId": property.IdFirebase,
-            "nombre": property.Nombre,
+            "nombre": helper.capitalizeLetters(property.Nombre),
             "edad": property.Edad,
             "foto": property.Foto 
         },
-        "ciudad": property.Ciudad,
-        "barrio": property.Barrio,
+        "ciudad": helper.capitalizeLetters(property.Ciudad),
+        "barrio": helper.capitalizeLetters(property.Barrio),
         "tipoHabitacion": property.TipoHabitacion,
         "tipoCama": property.TipoCama,
         "tamanoHabitacion": property.TamanoHabitacion == 0 ? null : property.TamanoHabitacion,
@@ -119,12 +119,12 @@ const formatPreview = (property) => {
         "depositoGarantia": property.DepositoGarantia,
         "servicioLimpieza": property.ServicioLimpieza,
         "expensas": property.Expensas,
-        "tituloAnuncio": property.TituloAnuncio,
+        "tituloAnuncio": helper.capitalizeFirstLetter(property.TituloAnuncio),
         "algoMas": property.AlgoMas,
-        "preferencia": property.Preferencia,
+        "preferencia": helper.capitalizeFirstLetter(property.Preferencia),
         "edadMin": property.EdadMin == 0 ? null : property.EdadMin,
         "edadMax": property.EdadMax == 0 ? null : property.EdadMax,
-        "actividadPrincipal": property.ActividadPrincipal,
+        "actividadPrincipal": helper.capitalizeFirstLetter(property.ActividadPrincipal),
     }
 }
 
