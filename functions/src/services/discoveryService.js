@@ -22,7 +22,7 @@ const getDiscovery = async (body) => {
         var parameters = getParams(body)
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
-        await queryPrepared.query("SELECT CONCAT(p.Nombre, ', ', p.Edad) AS nombrePropietario, fp.Value as Foto, pr.AlgoMas AS descripcion, pr.AlquilerMensual, pr.Barrio, pr.Ciudad, pr.TituloAnuncio, pr.IdFirebase as idPropietario, pr.IdPropiedad FROM Propiedad pr LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM  FotoPropiedad f WHERE  pr.IdPropiedad = f.IdPropiedad) fp WHERE pr.IdPropiedad NOT iN (SELECT IdPropiedad from Matchs WHERE IdFirebase = @IdFirebase) AND pr.IdPropiedad NOT iN (SELECT IdPropiedad from Rechazos WHERE IdFirebase = @IdFirebase) AND pr.Barrio = @Barrio ORDER BY nombrePropietario OFFSET @Page ROWS FETCH NEXT 10 ROWS ONLY").then((response) => {
+        await queryPrepared.query("SELECT CONCAT(p.Nombre, ', ', p.Edad) AS nombrePropietario, fp.Value as Foto, pr.AlgoMas AS descripcion, pr.AlquilerMensual, pr.Barrio, pr.Ciudad, pr.TituloAnuncio, pr.IdFirebase as idPropietario, pr.IdPropiedad FROM Propiedad pr LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM  FotoPropiedad f WHERE  pr.IdPropiedad = f.IdPropiedad) fp LEFT JOIN Perfil propio ON propio.IdFirebase = @IdFirebase WHERE pr.IdPropiedad NOT IN (SELECT IdPropiedad from Matchs WHERE IdFirebase = @IdFirebase) AND pr.IdPropiedad NOT iN (SELECT IdPropiedad from Rechazos WHERE IdFirebase = @IdFirebase) AND pr.Barrio = @Barrio AND (propio.Genero = pr.Preferencia OR pr.Preferencia = 'sin_preferencia') AND (propio.Edad BETWEEN pr.EdadMin AND pr.EdadMax) AND (propio.Dedicacion = 'estudio_trabajo' OR propio.Dedicacion = pr.ActividadPrincipal OR pr.ActividadPrincipal = 'sin_preferencia') ORDER BY nombrePropietario OFFSET @Page ROWS FETCH NEXT 10 ROWS ONLY").then((response) => {
             result = response.recordset
         })
         await client.close()
@@ -57,7 +57,6 @@ const getPropertyPreview = async (propId) => {
         console.dir(err)
         return err
     }
-
 }
 
 const formatDiscover = (result) => {
