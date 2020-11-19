@@ -51,6 +51,39 @@ async function getUser(userId) {
     }
 }
 
+async function getUserDetails(userId) {
+    let result;
+    const client = await sql.getConnection()
+    try{
+        let queryPrepared = await client.request()
+        // Parametros a insertar
+        queryPrepared.input('userId', mssql.NVarChar, userId)
+        // Ejecución de la query
+        await queryPrepared.query('SELECT * FROM Perfil WHERE IdFirebase = @userId').then((response) => {
+            result = response.recordset
+        })
+        // Cerramos la conexión
+        await client.close()
+        // Si el usuario NO existe, devolvemos null
+        if(result[0] == null) return null
+        // Me traigo las fotos
+        fotos = await getFotos(userId);
+        // Inyectamos en un array el value directamente
+        fotosArray = []
+        fotos.forEach(foto => fotosArray.push(foto.Value))
+        // Le inyectamos las fotos
+        result[0].Fotos = fotosArray
+        // Formateamos la respuesta
+        return formatPreview(result[0])
+    }catch (err){
+        console.dir(err)
+        return err
+    }
+}
+
+
+
+
 async function createUser(body) {
     let result;
     const client = await sql.getConnection()
@@ -239,6 +272,59 @@ const formatUser = (user) => {
         }
 }
 
+const formatPreview = (user) => {
+    return { "userId": user.IdFirebase,
+            "nombre": helper.capitalizeLetters(user.Nombre),
+            "nombreEdad": user.Nombre.toUpperCase() + ", " + user.Edad,
+            "resumen": helper.capitalizeFirstLetter(user.Genero) + "\n" + helper.capitalizeFirstLetter(user.Dedicacion),
+            "fotos": user.Fotos,
+            "personalidad": {
+                "activo": user.Activo,
+                "colaborador": user.Colaborador,
+                "facilDeLlevar": user.FacilDeLlevar,
+                "ordenado": user.Ordenado,
+                "relajado": user.Relajado,
+                "sociable": user.Sociable
+            },
+            "estilo": {
+                "artista": user.Artista,
+                "deportista": user.Deportista,
+                "cinefilo": user.Cinefilo,
+                "madrugador": user.Madrugador,
+                "melomano": user.Melomano,
+                "nocturno": user.Nocturno
+            },
+            "musica": {
+                "electronica": user.Electronica,
+                "latina": user.Latina,
+                "metal": user.Metal,
+                "punk": user.Punk,
+                "reggaeton": user.Reggaeton,
+                "rock": user.Rock
+            },
+            "deporte": {
+                "boxeo": user.Boxeo,
+                "rugby": user.Rugby,
+                "running": user.Running,
+                "tennis": user.Tennis,
+                "baloncesto": user.Baloncesto,
+                "futbol": user.Futbol
+            },
+            "peliculas": {
+                "accion": user.Accion,
+                "animacion": user.Animacion,
+                "comedia": user.Comedia,
+                "terror": user.Terror,
+                "romanticas": user.Romanticas,
+                "cienciaFiccion": user.CienciaFiccion
+            },
+            "instagram": helper.capitalizeFirstLetter(user.Instagram),
+            "twitter": helper.capitalizeFirstLetter(user.Twitter),
+            "linkedin": helper.capitalizeFirstLetter(user.LinkedIn),
+            "facebook": helper.capitalizeFirstLetter(user.Facebook),
+            "descripcion": user.Descripcion.charAt(0).toUpperCase() + user.Descripcion.slice(1)
+        }
+}
 
 const getParams = (body, user) => {
     return [
@@ -291,4 +377,4 @@ const getParams = (body, user) => {
 }
 
 
-module.exports = {createUser, getUser, updateUser, verifyUser}
+module.exports = {createUser, getUser, updateUser, verifyUser, getUserDetails}

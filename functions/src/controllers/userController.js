@@ -14,6 +14,18 @@ async function getUser(userId) {
   }
 }
 
+async function getUserDetails(userId) {
+  try {
+    user = await userService.getUserDetails(userId);
+    if (user == null) return { result: {}, code: 404 };
+    return { result: user, code: 200 };
+  } catch (error) {
+    console.dir(error);
+    return { result: "Se produjo un error al buscar el usuario", code: 500 };
+  }
+}
+
+
 async function createUser(body) {
   try {
     user = await userService.getUser(body.userId);
@@ -54,4 +66,4 @@ async function verifyUser(body) {
   }
 }
 
-module.exports = { getUser, createUser, updateUser,verifyUser };
+module.exports = { getUser, createUser, updateUser,verifyUser, getUserDetails };
