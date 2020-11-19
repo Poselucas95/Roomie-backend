@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow-callback */
 /* eslint-disable promise/catch-or-return */
 /* eslint-disable no-eq-null */
 /* eslint-disable eqeqeq */
