@@ -50,7 +50,7 @@ router.post("/verify", async (req, res) => {
   }
 });
 
-const testImagen = (imageBase) => {
+/* const testImagen = (imageBase) => {
   var stream = require("stream");
   var bufferStream = new stream.PassThrough();
   bufferStream.end(Buffer.from(imageBase, "base64"));
@@ -87,5 +87,5 @@ bufferStream
       console.log("resultado: ", result);
     });
 };
-
+ */
 module.exports = router;
