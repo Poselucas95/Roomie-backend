@@ -3,7 +3,8 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable consistent-return */
 /* eslint-disable promise/always-return */
-const sql = require('../database/sql')
+const sql = require('../database/sql');
+const api = require('../api/azureApi');
 const mssql = require( "mssql" );
 var dbConfig = {
     server: '35.198.31.187',
@@ -16,7 +17,8 @@ var dbConfig = {
         },
 };
 
-const helper = require('../helpers/helper')
+const helper = require('../helpers/helper');
+const { response } = require('express');
 
 async function getUser(userId) {
     let result;
@@ -166,9 +168,11 @@ const getFotos = async (userId) => {
 }
 
 
-const verifyUser = async (dni, user) => {
-    let result;
-    // Aca hace la magia.. y devolvete que son la misma persona, true or false.
+const verifyUser = async (fotoDni, fotoUser) => {
+    var dni = await api.getId(fotoDni)
+    var user = await api.getId(fotoUser)
+    var response = await api.verifyUsers(dni.data[0].faceId, user.data[0].faceId)
+    return response.data.isIdentical
 }
 
 
