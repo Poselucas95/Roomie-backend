@@ -14,15 +14,17 @@ let imageUrl = 'https://firebasestorage.googleapis.com/v0/b/rumi-acdfa.appspot.c
 // Send a POST request
 axios({
     method: 'post',
-    url: 'https://brazilsouth.api.cognitive.microsoft.com' + '/face/v1.0/detect?returnFaceId=true',
+    url: 'https://brazilsouth.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true',
     params : {
-        detectionModel: 'detection_02',
+        detectionModel: 'detection_01',
         returnFaceId: true
     },
     data: {
-        'url': 'https://firebasestorage.googleapis.com/v0/b/rumi-acdfa.appspot.com/o/test.jpg',
+        'url': 'https://firebasestorage.googleapis.com/v0/b/rumi-acdfa.appspot.com/o/WhatsApp%20Image%202019-06-05%20at%2017.31.21.jpeg?alt=media',
     },
-    headers: { 'Ocp-Apim-Subscription-Key': 'cfe6f6165e2e4f0785d5f58300780130' }
+    headers: { 
+        'Ocp-Apim-Subscription-Key': 'cfe6f6165e2e4f0785d5f58300780130' 
+    }
 }).then(function (response) {
     // console.log('Status text: ' + response.status)
     // console.log('Status text: ' + response.statusText)
