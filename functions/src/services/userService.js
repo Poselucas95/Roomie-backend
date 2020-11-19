@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow-callback */
 /* eslint-disable promise/catch-or-return */
 /* eslint-disable no-eq-null */
 /* eslint-disable eqeqeq */
@@ -18,7 +19,6 @@ var dbConfig = {
 };
 
 const helper = require('../helpers/helper');
-const { response } = require('express');
 
 async function getUser(userId) {
     let result;
@@ -172,9 +172,26 @@ const verifyUser = async (fotoDni, fotoUser) => {
     var dni = await api.getId(fotoDni)
     var user = await api.getId(fotoUser)
     var response = await api.verifyUsers(dni.data[0].faceId, user.data[0].faceId)
+    if(response.data.isIdentical){
+        await deleteImage(fotoDni, fotoUser);
+    }
     return response.data.isIdentical
 }
 
+const deleteImage = async (fotoDni, fotoUser) => {
+    const admin = require("firebase-admin");
+admin.initializeApp({
+    storageBucket: "gs://rumi-acdfa.appspot.com"
+});
+
+const bucket = admin.storage().bucket();
+bucket.deleteFiles({
+    prefix: fotoDni
+  });
+bucket.deleteFiles({
+    prefix: fotoUser
+})
+}
 
 // Formatea la salida de json que reciben desde front para GET
 const formatUser = (user) => {
