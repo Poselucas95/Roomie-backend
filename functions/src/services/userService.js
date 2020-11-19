@@ -172,9 +172,7 @@ const verifyUser = async (fotoDni, fotoUser) => {
     var dni = await api.getId(fotoDni)
     var user = await api.getId(fotoUser)
     var response = await api.verifyUsers(dni.data[0].faceId, user.data[0].faceId)
-    if(response.data.isIdentical){
-        await deleteImage(fotoDni, fotoUser);
-    }
+    await deleteImage(fotoDni, fotoUser);
     return response.data.isIdentical
 }
 
