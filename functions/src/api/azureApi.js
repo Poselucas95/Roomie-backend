@@ -14,19 +14,19 @@ const api = axios.create({
   },
 });
 
-const getId = async (foto) => {
+const getId =  (foto) => {
     const aux = "https://firebasestorage.googleapis.com/v0/b/rumi-acdfa.appspot.com/o/" + foto + "?alt=media";
   const body = {
     url: aux  };
-  return await api.post("/face/v1.0/detect", body);
+  return api.post("/face/v1.0/detect", body);
 };
 
-const verifyUsers = async (dni, user) => {
+const verifyUsers = (dni, user) => {
   const body = {
     faceId1: dni,
     faceId2: user,
   };
-  return await api.post("/face/v1.0/verify", body);
+  return api.post("/face/v1.0/verify", body);
 };
 
 module.exports = { getId, verifyUsers };

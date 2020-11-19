@@ -20,8 +20,6 @@ router.get("/:userId", async (req, res) => {
 /* CREATE user. */
 router.post("/", async (req, res) => {
   try {
-    //const test = await testImagen(req.body.foto);
-    //res.status(200).send("test");
     var response = await userController.createUser(req.body);
     res.status(response.code).send(response.result);
   } catch (err) {
@@ -50,42 +48,4 @@ router.post("/verify", async (req, res) => {
   }
 });
 
-/* const testImagen = (imageBase) => {
-  var stream = require("stream");
-  var bufferStream = new stream.PassThrough();
-  bufferStream.end(Buffer.from(imageBase, "base64"));
-  var admin = require("firebase-admin");
-
-  admin.initializeApp({
-    keyFilename:
-      "../src/config/rumi-acdfa-firebase-adminsdk-cy9mn-cd40318569.json",
-    storageBucket: "rumi-acdfa.appspot.com",
-  });
-
-  //Define bucket.
-  var myBucket = admin.storage().bucket();
-  //Define file & file name.
-  var file = myBucket.file("lucasprueba.jpg");
-
-  //Pipe the 'bufferStream' into a 'file.createWriteStream' method.
-bufferStream
-    .pipe(
-      file.createWriteStream({
-        metadata: {
-          contentType: "image/jpeg",
-        },
-        public: true,
-        validation: "md5",
-      })
-    )
-    .on("error", (err) => {
-      console.log("fun ciono");
-      console.log(err);
-    })
-    .on("finish", (result) => {
-      console.log("error");
-      console.log("resultado: ", result);
-    });
-};
- */
 module.exports = router;
