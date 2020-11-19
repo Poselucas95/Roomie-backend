@@ -172,8 +172,10 @@ const getFotos = async (userId) => {
 const verifyUser = async (fotoDni, fotoUser) => {
     var dni = await api.getId(fotoDni)
     var user = await api.getId(fotoUser)
-    var response = await api.verifyUsers(dni.data[0].faceId, user.data[0].faceId)
-    return response.data.isIdentical
+    //var response = await api.verifyUsers(dni.data[0].faceId, user.data[0].faceId)
+    console.log(user.data)
+    return user
+    //return response.data.isIdentical
 }
 
 
