@@ -172,13 +172,11 @@ const verifyUser = async (fotoDni, fotoUser) => {
     var dni = await api.getId(fotoDni)
     var user = await api.getId(fotoUser)
     var response = await api.verifyUsers(dni.data[0].faceId, user.data[0].faceId)
-/*     if(response.data.isIdentical){
-        await deleteImage(fotoDni, fotoUser);
-    } */
+    await deleteImage(fotoDni, fotoUser);
     return response.data.isIdentical
 }
 
-/* const deleteImage = async (fotoDni, fotoUser) => {
+const deleteImage = async (fotoDni, fotoUser) => {
     const admin = require("firebase-admin");
 admin.initializeApp({
     storageBucket: "gs://rumi-acdfa.appspot.com"
@@ -192,7 +190,7 @@ bucket.deleteFiles({
     prefix: fotoUser
 })
 }
- */
+ 
 // Formatea la salida de json que reciben desde front para GET
 const formatUser = (user) => {
     return { "userId": user.IdFirebase,
