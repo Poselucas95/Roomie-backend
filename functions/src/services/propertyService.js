@@ -265,7 +265,7 @@ async function getPropertyDetails(propId) {
         // Parametros a insertar
         queryPrepared.input('propId', mssql.NVarChar, propId)
         // Ejecución de la query
-        await queryPrepared.query('SELECT pr.*, p.nombre, p.edad FROM Propiedad pr LEFT JOIN Perfil p ON pr.IdFirebase=p.IdFirebase WHERE IdPropiedad = @propId').then((response) => {
+        await queryPrepared.query('SELECT pr.*, p.Nombre, p.Edad, fp.Value as Foto FROM Propiedad pr LEFT JOIN Perfil p ON pr.IdFirebase=p.IdFirebase  OUTER APPLY (SELECT TOP 1 f.* FROM  FotoPerfil f WHERE  p.IdFirebase=f.IdFirebase) fp WHERE pr.IdPropiedad = @propId').then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
@@ -289,6 +289,7 @@ const formatDetails = (property) => {
                 "userId": property.IdFirebase,
                 "nombre": helper.capitalizeLetters(property.Nombre),
                 "edad": property.Edad,
+                "foto": property.Foto,
             },
             "ciudad": helper.capitalizeLetters(property.Ciudad),
             "barrio": helper.capitalizeLetters(property.Barrio),
