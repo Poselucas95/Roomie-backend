@@ -265,7 +265,7 @@ async function getPropertyDetails(propId) {
         // Parametros a insertar
         queryPrepared.input('propId', mssql.NVarChar, propId)
         // Ejecución de la query
-        await queryPrepared.query('SELECT * FROM Propiedad WHERE IdPropiedad = @propId').then((response) => {
+        await queryPrepared.query('SELECT pr.*, p.nombre, p.edad FROM Propiedad pr LEFT JOIN Perfil p ON pr.IdFirebase=p.IdFirebase WHERE IdPropiedad = @propId').then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
@@ -283,9 +283,13 @@ async function getPropertyDetails(propId) {
 }
 
 const formatDetails = (property) => {
-    return { "userId": property.IdFirebase,
-            "idPropiedad": property.IdPropiedad,
+    return {"idPropiedad": property.IdPropiedad,
             "fotos": property.Fotos,
+            "propietario": {
+                "userId": property.IdFirebase,
+                "nombre": helper.capitalizeLetters(property.Nombre),
+                "edad": property.Edad,
+            },
             "ciudad": helper.capitalizeLetters(property.Ciudad),
             "barrio": helper.capitalizeLetters(property.Barrio),
             "tipoHabitacion": property.TipoHabitacion,
@@ -320,7 +324,7 @@ const formatDetails = (property) => {
             "expensas": property.Expensas,
             "tituloAnuncio": helper.capitalizeLetters(property.TituloAnuncio),
             "algoMas": property.AlgoMas.charAt(0).toUpperCase() + property.AlgoMas.slice(1),
-            "preferenciaCompanero": property.Preferencia + "\n" + property.EdadMin + " a " + property.EdadMax + " años",
+            "preferenciaCompanero": property.Preferencia != "sin_preferencia" ? property.Preferencia + "\n" + property.EdadMin + " a " + property.EdadMax + " años" : property.EdadMin + " a " + property.EdadMax + " años",
             "actividadPrincipal": helper.capitalizeFirstLetter(property.ActividadPrincipal),
         }
 }
