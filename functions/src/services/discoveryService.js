@@ -16,13 +16,90 @@ const getParams = (body) => {
 
 const getDiscovery = async (body) => {
     let result;
+    var sqlFilters = { alquiler: "", habitacion: "", cama: "", preferencia: "", comodidadProp: "", comodidadHab: "", normas: "" }
+
     const client = await sql.getConnection()
+
     try{
         let queryPrepared = await client.request()
         var parameters = getParams(body)
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
+        // FILTROS DINAMICOS
+        if(body.filters){
+            // SI VIENE ALQUILER MAXIMO Y MINIMO
+            if(body.filters.maximoAlquiler && !body.filters.minimoAlquiler){
+                sqlFilters.alquiler = "AND pr.AlquilerMensual <= @Max"
+              queryPrepared.input('Max', mssql.Float, body.filters.maximoAlquiler)
+            }
+            // SOLO VIENE ALQUILER MINIMO
+            if(body.filters.minimoAlquiler && !body.filters.maximoAlquiler){
+                sqlFilters.alquiler = "AND pr.AlquilerMensual >= @Min"
+              queryPrepared.input('Min', mssql.Float, body.filters.minimoAlquiler)
+            }
+            // SOLO VIENE ALQUILER MAXIMO
+            if(body.filters.minimoAlquiler && body.filters.maximoAlquiler){
+            sqlFilters.alquiler = "AND pr.AlquilerMensual BETWEEN  @Min AND @Max"
+              queryPrepared.input('Min', mssql.Float, body.filters.minimoAlquiler)
+              queryPrepared.input('Max', mssql.Float, body.filters.maximoAlquiler)
+            } 
+            // TIPO DE HABITACION: PRIVADA, COMPARTIDA 
+            if(body.filters.tipoHabitacion != null){
+                sqlFilters.habitacion = "AND pr.TipoHabitacion = @Habitacion"
+                queryPrepared.input('Habitacion', mssql.Bit, body.filters.tipoHabitacion)
+            }
+            // TIPO DE CAMA: DOBLE, SIMPLE
+            if(body.filters.tipoCama != null){
+                sqlFilters.cama = "AND pr.TipoCama = @Cama"
+                queryPrepared.input('Cama', mssql.Bit, body.filters.tipoCama)
+            }
+            // PREFERENCIA: CHICO, CHICA, OTROS
+            if(body.filters.preferencia != null){
+                if(body.filters.preferencia == "chico") sqlFilters.preferencia = "AND pr.Chicos >= 1 AND pr.Chicas = 0 AND pr.Otros = 0"
+                if(body.filters.preferencia == "chica") sqlFilters.preferencia = "AND pr.Chicos = 0 AND pr.Chicas >= 1 AND pr.Otros = 0"
+                if(body.filters.preferencia == "otros") sqlFilters.preferencia = "AND pr.Chicos = 0 AND pr.Chicas = 0 AND pr.Otros >= 1"
+            }
+            // COMODIDADES HABITACION
+            if(body.filters.comodidadProp != null){
+                var auxProp = []
+                if(body.filters.comodidadProp.tv) auxProp.push("AND pr.TV = 1") 
+                if(body.filters.comodidadProp.wifi) auxProp.push("AND pr.WIFI = 1") 
+                if(body.filters.comodidadProp.acc) auxProp.push("AND pr.ACC = 1") 
+                if(body.filters.comodidadProp.calefaccion) auxProp.push("AND pr.Calefaccion = 1") 
+                if(body.filters.comodidadProp.propidadAccesible) auxProp.push("AND pr.PropiedadACcesible = 1") 
+                if(body.filters.comodidadProp.piscina) auxProp.push("AND pr.Piscina = 1") 
+                sqlFilters.comodidadProp = auxProp.join(" ")
+            }
+            if(body.filters.comodidadHab != null){
+                var auxHab = []
+                if(body.filters.comodidadHab.banoPrivado) auxHab.push("AND pr.BanoPrivado = 1") 
+                if(body.filters.comodidadHab.balcon) auxHab.push("AND pr.Balcon = 1") 
+                if(body.filters.comodidadHab.accHabitacion) auxHab.push("AND pr.ACCHabitacion = 1") 
+                sqlFilters.comodidadHab = auxHab.join(" ")
+            }
+            if(body.filters.normas != null){
+                var auxNormas = []
+                if(body.filters.normas.fumar) auxNormas.push("AND pr.Fumar = 1") 
+                if(body.filters.normas.mascotas) auxNormas.push("AND pr.Mascotas = 1") 
+                if(body.filters.normas.parejas) auxNormas.push("AND pr.Parejas = 1") 
+                if(body.filters.normas.LGTB) auxNormas.push("AND pr.lgtb = 1") 
+                sqlFilters.normas = auxNormas.join(" ")
+            }
+
+            
+        }
+        const query =
+            "SELECT CONCAT(p.Nombre, ', ', p.Edad) AS nombrePropietario, fp.Value as Foto, pr.AlgoMas AS descripcion, pr.AlquilerMensual, pr.Barrio, pr.Ciudad, pr.TituloAnuncio, pr.IdFirebase as idPropietario, pr.IdPropiedad FROM Propiedad pr LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM  FotoPropiedad f WHERE  pr.IdPropiedad = f.IdPropiedad) fp LEFT JOIN Perfil propio ON propio.IdFirebase = @IdFirebase WHERE pr.IdPropiedad NOT IN (SELECT IdPropiedad from Matchs WHERE IdFirebase = @IdFirebase) AND pr.IdPropiedad NOT iN (SELECT IdPropiedad from Rechazos WHERE IdFirebase = @IdFirebase) AND pr.Barrio = @Barrio AND (propio.Genero = pr.Preferencia OR pr.Preferencia = 'sin_preferencia') AND (propio.Edad BETWEEN pr.EdadMin AND pr.EdadMax) AND (propio.Dedicacion = 'estudio_trabajo' OR propio.Dedicacion = pr.ActividadPrincipal OR pr.ActividadPrincipal = 'sin_preferencia') " +
+            sqlFilters.alquiler + " " +
+            sqlFilters.habitacion + " " +
+            sqlFilters.cama + " " +
+            sqlFilters.preferencia + " " +
+            sqlFilters.comodidadProp + " " +
+            sqlFilters.comodidadHab + " " +
+            sqlFilters.normas + " " +
+            " ORDER BY nombrePropietario OFFSET @Page ROWS FETCH NEXT 10 ROWS ONLY";
+            console.log(query)
         // Ejecución de la query
-        await queryPrepared.query("SELECT CONCAT(p.Nombre, ', ', p.Edad) AS nombrePropietario, fp.Value as Foto, pr.AlgoMas AS descripcion, pr.AlquilerMensual, pr.Barrio, pr.Ciudad, pr.TituloAnuncio, pr.IdFirebase as idPropietario, pr.IdPropiedad FROM Propiedad pr LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM  FotoPropiedad f WHERE  pr.IdPropiedad = f.IdPropiedad) fp LEFT JOIN Perfil propio ON propio.IdFirebase = @IdFirebase WHERE pr.IdPropiedad NOT IN (SELECT IdPropiedad from Matchs WHERE IdFirebase = @IdFirebase) AND pr.IdPropiedad NOT iN (SELECT IdPropiedad from Rechazos WHERE IdFirebase = @IdFirebase) AND pr.Barrio = @Barrio AND (propio.Genero = pr.Preferencia OR pr.Preferencia = 'sin_preferencia') AND (propio.Edad BETWEEN pr.EdadMin AND pr.EdadMax) AND (propio.Dedicacion = 'estudio_trabajo' OR propio.Dedicacion = pr.ActividadPrincipal OR pr.ActividadPrincipal = 'sin_preferencia') ORDER BY nombrePropietario OFFSET @Page ROWS FETCH NEXT 10 ROWS ONLY").then((response) => {
+        await queryPrepared.query(query).then((response) => {
             result = response.recordset
         })
         await client.close()
