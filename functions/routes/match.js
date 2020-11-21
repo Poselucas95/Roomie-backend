@@ -39,6 +39,19 @@ router.get('/user/:userId', async (req, res) => {
   }
 });
 
+/* GET matchs by userId. */
+// Este trae TODOS los match que el USUARIO tiene.
+router.get('/matches/:userId', async (req, res) => {
+  if(req.params.userId && req.params.userId == null) res.status(400).send('Error al solicitar el match. Falta property ID')
+  const prop = req.query.prop ? req.query.prop : false
+  try{
+    var response = await matchController.getMatches(req.params.userId, prop)
+    res.status(response.code).send(response.result)
+  }catch (err){
+    res.send("Error al buscar los match", 500)
+  }
+});
+
 /* CREATE Match. */
 router.post('/', async (req, res) => {
   try{

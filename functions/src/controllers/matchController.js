@@ -37,6 +37,17 @@ async function getMatchsByUserId(userId) {
     }
 }
 
+async function getMatches(userId, prop) {
+    try{
+        match = await matchService.getMatches(userId, prop)
+        if(match == null) return { 'result': "No hay match con el user ID solicitado", 'code': 404}
+        return { 'result': match, 'code': 200}
+    }catch(error){
+        console.dir(error)
+        return { 'result': 'Se produjo un error al buscar el match', 'code': 500}
+    }
+}
+
 async function createMatch(body) {
     try{
         match = await matchService.existMatch(body.userId, body.idPropiedad)
@@ -66,4 +77,4 @@ async function updateMatch(body) {
 }
 
 
-module.exports = {getMatchsByUserId, getMatchsByPropId, createMatch, updateMatch, getMatchsPending}
+module.exports = {getMatchsByUserId, getMatchsByPropId, createMatch, updateMatch, getMatchsPending,getMatches}

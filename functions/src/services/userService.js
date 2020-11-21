@@ -268,14 +268,14 @@ const formatUser = (user) => {
             "twitter": helper.capitalizeFirstLetter(user.Twitter),
             "linkedin": helper.capitalizeFirstLetter(user.LinkedIn),
             "facebook": helper.capitalizeFirstLetter(user.Facebook),
-            "descripcion": user.Descripcion.charAt(0).toUpperCase() + user.Descripcion.slice(1)
+            "descripcion": (user.Descripcion && user.Descripcion != null) ? user.Descripcion.charAt(0).toUpperCase() + user.Descripcion.slice(1) : ""
         }
 }
 
 const formatPreview = (user) => {
     return { "userId": user.IdFirebase,
             "nombre": helper.capitalizeLetters(user.Nombre),
-            "nombreEdad": user.Nombre.toUpperCase() + ", " + user.Edad,
+            "nombreEdad": user.Nombre ?  user.Nombre.toUpperCase() + ", " + user.Edad : "",
             "resumen": helper.capitalizeFirstLetter(user.Genero) + "\n" + helper.capitalizeFirstLetter(user.Dedicacion),
             "fotos": user.Fotos,
             "personalidad": {
@@ -322,7 +322,7 @@ const formatPreview = (user) => {
             "twitter": helper.capitalizeFirstLetter(user.Twitter),
             "linkedin": helper.capitalizeFirstLetter(user.LinkedIn),
             "facebook": helper.capitalizeFirstLetter(user.Facebook),
-            "descripcion": user.Descripcion.charAt(0).toUpperCase() + user.Descripcion.slice(1)
+            "descripcion": (user.Descripcion && user.Descripcion != null) ? user.Descripcion.charAt(0).toUpperCase() + user.Descripcion.slice(1) : ""
         }
 }
 

@@ -332,13 +332,16 @@ const formatDetails = (property) => {
 
 
 const formatCompas = (genero, texto) => {
-    if(genero == 0){
-        return ""
+    if(genero && genero != null && texto && texto != null){
+        if(genero == 0){
+            return ""
+        }
+        if(texto == "Otros" || genero == 1){
+            return texto + " " + genero + " \n"
+        }
+        return texto + "/s " + genero + "\n"
     }
-    if(texto == "Otros" || genero == 1){
-        return texto + " " + genero + " \n"
-    }
-    return texto + "/s " + genero + "\n"
+    return ""
 }
 
 const getFotos = async (propertyId) => {

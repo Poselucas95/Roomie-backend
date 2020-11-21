@@ -58,6 +58,8 @@ async function getMatchsByPropId(propertyId) {
         return err
     }
 }
+
+
 async function getMatchsPending(propertyId) {
     let result;
     const client = await sql.getConnection()
@@ -150,6 +152,36 @@ async function existMatch(userId, propId) {
     }
 }
 
+// Aca trae todos los matchs con estado match.
+async function getMatches(userId, prop) {
+    let result;
+    const client = await sql.getConnection()
+    var query = ""
+    try{
+        let queryPrepared = await client.request()
+        // Parametros a insertar
+        queryPrepared.input('IdFirebase', mssql.NVarChar, userId)
+        // Ejecución de la query
+        if(prop){
+            query= "SELECT p.Nombre, fp.Value as Foto FROM Propiedad pr LEFT JOIN Matchs m ON pr.IdPropiedad = m.IdPropiedad LEFT JOIN Perfil p ON p.IdFirebase = pr.IdFirebase OUTER APPLY (SELECT TOP 1 f.* FROM  FotoPerfil f WHERE  f.IdFirebase = pr.IdFirebase) fp WHERE m.Estado = 'Match' AND pr.IdFirebase = @IdFirebase"
+        }else{
+            query= "SELECT p.Nombre, fp.Value as Foto FROM Matchs m LEFT JOIN Propiedad pr ON m.IdPropiedad = pr.IdPropiedad LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 f.* FROM  FotoPerfil f WHERE  f.IdFirebase = p.IdFirebase) fp WHERE m.Estado = 'Match' AND m.IdFirebase = @IdFirebase"
+        }
+        await queryPrepared.query(query).then((response) => {
+            result = response.recordset
+        })
+        // Cerramos la conexión
+        await client.close()
+        if(result[0] == null) return null
+        const resultado = []
+        result.forEach(item => resultado.push({"nombre": item.Nombre, "foto": item.Foto}))
+        return resultado
+    }catch (err){
+        console.dir(err)
+        return err
+    }
+}
+
 
 const formatMatchsByUserId = (match) => {
     return { "userId": match.IdFirebase,
@@ -180,4 +212,4 @@ const formatMatchsByPropId = (match) => {
 }
 
 
-module.exports = {createMatch, getMatchsByPropId,getMatchsByUserId, updateMatch, getMatchsPending, existMatch}
+module.exports = {createMatch, getMatchsByPropId,getMatchsByUserId, updateMatch, getMatchsPending, existMatch, getMatches}

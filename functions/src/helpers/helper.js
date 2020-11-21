@@ -1,11 +1,19 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-eq-null */
 
 const capitalizeLetters = (string) => {
-   return string.toLowerCase().replace(/(^|\s)([a-z])/g, l => l.toUpperCase())
+    if(string && string != null){
+      return string.toLowerCase().replace(/(^|\s)([a-z])/g, l => l.toUpperCase())      
+    }
+    return ""
 }
 
 function capitalizeFirstLetter(string) {
-    aux = string.toLowerCase()
-    return aux.charAt(0).toUpperCase() + aux.slice(1);
+    if(string && string != null){
+      aux = string.toLowerCase()
+      return aux.charAt(0).toUpperCase() + aux.slice(1);
+    }
+    return ""
   }
 
 
