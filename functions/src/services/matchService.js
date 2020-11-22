@@ -155,6 +155,7 @@ async function existMatch(userId, propId) {
 // Aca trae todos los matchs con estado match.
 async function getMatches(userId, prop) {
     let result;
+    console.log(prop)
     const client = await sql.getConnection()
     var query = ""
     try{
@@ -162,9 +163,10 @@ async function getMatches(userId, prop) {
         // Parametros a insertar
         queryPrepared.input('IdFirebase', mssql.NVarChar, userId)
         // Ejecución de la query
-        if(prop){
+        if(prop === 'true'){
             query= "SELECT p.Nombre, fp.Value as Foto FROM Propiedad pr LEFT JOIN Matchs m ON pr.IdPropiedad = m.IdPropiedad LEFT JOIN Perfil p ON p.IdFirebase = pr.IdFirebase OUTER APPLY (SELECT TOP 1 f.* FROM  FotoPerfil f WHERE  f.IdFirebase = pr.IdFirebase) fp WHERE m.Estado = 'Match' AND pr.IdFirebase = @IdFirebase"
-        }else{
+        }
+        if(prop === 'false'){
             query= "SELECT p.Nombre, fp.Value as Foto FROM Matchs m LEFT JOIN Propiedad pr ON m.IdPropiedad = pr.IdPropiedad LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 f.* FROM  FotoPerfil f WHERE  f.IdFirebase = p.IdFirebase) fp WHERE m.Estado = 'Match' AND m.IdFirebase = @IdFirebase"
         }
         await queryPrepared.query(query).then((response) => {
