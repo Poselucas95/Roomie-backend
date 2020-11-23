@@ -204,6 +204,10 @@ const getFotos = async (userId) => {
 const verifyUser = async (userId) => {
     var dni = await api.getId("fotoDni-" + userId)
     var user = await api.getId("fotoCara-" + userId)
+    if(dni.data[0] == null || user.data[0] == null || user.data[0].faceId == null || dani.data[0].faceId == null){
+        await deleteImage("fotoDni-" + userId, "fotoCara-" + userId);
+        return 'Error'
+    }
     var response = await api.verifyUsers(dni.data[0].faceId, user.data[0].faceId)
     await deleteImage("fotoDni-" + userId, "fotoCara-" + userId);
     return response.data.isIdentical
