@@ -204,7 +204,7 @@ const getFotos = async (userId) => {
 const verifyUser = async (userId) => {
     var dni = await api.getId("fotoDni-" + userId)
     var user = await api.getId("fotoCara-" + userId)
-    if(dni.data[0] == null || user.data[0] == null || user.data[0].faceId == null || dani.data[0].faceId == null){
+    if(dni.data[0] == null || user.data[0] == null || user.data[0].faceId == null || dni.data[0].faceId == null){
         await deleteImage("fotoDni-" + userId, "fotoCara-" + userId);
         return 'Error'
     }
@@ -216,7 +216,7 @@ const verifyUser = async (userId) => {
 const deleteImage = async (fotoDni, fotoUser) => {
     const admin = require("firebase-admin");
 admin.initializeApp({
-    storageBucket: "gs://rumi-acdfa.appspot.com/validate/dni"
+    storageBucket: "gs://rumi-acdfa.appspot.com/validate/dni/"
 });
 
 const bucket = admin.storage().bucket();
