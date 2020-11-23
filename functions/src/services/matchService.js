@@ -176,7 +176,7 @@ async function getMatches(userId, prop) {
         await client.close()
         if(result[0] == null) return null
         const resultado = []
-        result.forEach(item => resultado.push({"nombre": helper.capitalizeLetters(item.Apodo), "foto": helper.capitalizeLetters(item.Foto)}))
+        result.forEach(item => resultado.push({"nombre": helper.capitalizeLetters(item.Apodo), "foto": item.Foto}))
         return resultado
     }catch (err){
         console.dir(err)
