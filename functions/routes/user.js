@@ -51,9 +51,11 @@ router.put("/", async (req, res) => {
 
 /* VERIFY fotos */
 
-router.post("/verify", async (req, res) => {
+router.get("/verify/:userId", async (req, res) => {
+  if (req.params.userId && req.params.userId == null)
+    res.status(400).send("Error al verificar el user. Falta userID");
   try {
-    var response = await userController.verifyUser(req.body);
+    var response = await userController.verifyUser(req.params.userId);
     res.status(response.code).send(response.result);
   } catch (err) {
     res.send("No se pudo realizar la verificación");

@@ -56,9 +56,9 @@ async function updateUser(body) {
   }
 }
 
-async function verifyUser(body) {
+async function verifyUser(userId) {
   try {
-    result = await userService.verifyUser(body.dni, body.user);
+    result = await userService.verifyUser(userId);
     return { result: result, code: 200 };
   } catch (error) {
     console.dir(error);

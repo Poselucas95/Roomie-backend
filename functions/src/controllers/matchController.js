@@ -67,7 +67,7 @@ async function updateMatch(body) {
         auxMatch = await matchService.existMatch(body.userId, body.idPropiedad)
         // Si el match existe, devolvemos result y codigo 404.
         if(auxMatch == null) return { 'result': "El match no existe", 'code': 404}
-        response = await matchService.updateMatch(body, matchByUser)
+        response = await matchService.updateMatch(body)
         if(response.originalError && response.originalError.info.name === "ERROR" ) return { 'result': 'Ha ocurrido un error', "code": 400}
         return { 'result': response, 'code': 200}
     }catch(error){

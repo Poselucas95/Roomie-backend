@@ -15,7 +15,7 @@ const api = axios.create({
 });
 
 const getId =  (foto) => {
-    const aux = "https://firebasestorage.googleapis.com/v0/b/rumi-acdfa.appspot.com/o/" + foto + "?alt=media";
+    const aux = "https://firebasestorage.googleapis.com/v0/b/rumi-acdfa.appspot.com/o/validate%2Fdni%2F" + foto + "?alt=media";
   const body = {
     url: aux  };
   return api.post("/face/v1.0/detect", body);
