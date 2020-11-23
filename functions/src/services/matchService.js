@@ -22,7 +22,7 @@ async function getMatchsByUserId(userId) {
         // Parametros a insertar
         queryPrepared.input('IdFirebase', mssql.NVarChar, userId)
         // Ejecución de la query
-        await queryPrepared.query("SELECT M.*, PR.IdFirebase as idPropietario, PR.AlquilerMensual,PR.TipoHabitacion, PR.TamanoHabitacion, PR.Ciudad , PR.Barrio, fp.Value as Foto, P.Nombre, P.Edad FROM Matchs M  INNER JOIN Propiedad PR ON PR.IdPropiedad = M.IdPropiedad INNER JOIN Perfil P ON P.IdFirebase = PR.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM   FotoPropiedad f WHERE  M.IdPropiedad = f.IdPropiedad) fp WHERE M.IdFirebase =  @IdFirebase AND (M.Estado = 'Pendiente' OR M.Estado = 'Match')").then((response) => {
+        await queryPrepared.query("SELECT M.*, PR.IdFirebase as idPropietario, PR.AlquilerMensual,PR.TipoHabitacion, PR.TamanoHabitacion, PR.Ciudad , PR.Barrio, fp.Value as Foto, P.Apodo, P.Edad FROM Matchs M  INNER JOIN Propiedad PR ON PR.IdPropiedad = M.IdPropiedad INNER JOIN Perfil P ON P.IdFirebase = PR.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM   FotoPropiedad f WHERE  M.IdPropiedad = f.IdPropiedad) fp WHERE M.IdFirebase =  @IdFirebase AND (M.Estado = 'Pendiente' OR M.Estado = 'Match')").then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
@@ -44,7 +44,7 @@ async function getMatchsByPropId(propertyId) {
         // Parametros a insertar
         queryPrepared.input('IdPropiedad', mssql.Int, propertyId)
         // Ejecución de la query
-        await queryPrepared.query("SELECT M.*, P.Nombre, P.Edad, P.Genero, P.Dedicacion, fp.Value as Foto FROM Matchs M  INNER JOIN Perfil P ON P.IdFirebase = M.IdFirebase  OUTER APPLY (SELECT TOP 1 * FROM   FotoPerfil f WHERE  M.IdFirebase = f.IdFirebase) fp WHERE M.IdPropiedad = @IdPropiedad AND (M.Estado = 'Pendiente' OR M.Estado = 'Match')").then((response) => {
+        await queryPrepared.query("SELECT M.*, P.Apodo, P.Edad, P.Genero, P.Dedicacion, fp.Value as Foto FROM Matchs M  INNER JOIN Perfil P ON P.IdFirebase = M.IdFirebase  OUTER APPLY (SELECT TOP 1 * FROM   FotoPerfil f WHERE  M.IdFirebase = f.IdFirebase) fp WHERE M.IdPropiedad = @IdPropiedad AND (M.Estado = 'Pendiente' OR M.Estado = 'Match')").then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
@@ -164,10 +164,10 @@ async function getMatches(userId, prop) {
         queryPrepared.input('IdFirebase', mssql.NVarChar, userId)
         // Ejecución de la query
         if(prop === 'true'){
-            query= "SELECT p.Nombre, fp.Value as Foto FROM Propiedad pr LEFT JOIN Matchs m ON pr.IdPropiedad = m.IdPropiedad LEFT JOIN Perfil p ON p.IdFirebase = m.IdFirebase OUTER APPLY (SELECT TOP 1 f.* FROM  FotoPerfil f WHERE  f.IdFirebase = pr.IdFirebase) fp WHERE m.Estado = 'Match' AND pr.IdFirebase = @IdFirebase"
+            query= "SELECT p.Apodo, fp.Value as Foto FROM Propiedad pr LEFT JOIN Matchs m ON pr.IdPropiedad = m.IdPropiedad LEFT JOIN Perfil p ON p.IdFirebase = m.IdFirebase OUTER APPLY (SELECT TOP 1 f.* FROM  FotoPerfil f WHERE  f.IdFirebase = pr.IdFirebase) fp WHERE m.Estado = 'Match' AND pr.IdFirebase = @IdFirebase"
         }
         if(prop === 'false'){
-            query= "SELECT p.Nombre, fp.Value as Foto FROM Matchs m LEFT JOIN Propiedad pr ON m.IdPropiedad = pr.IdPropiedad LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 f.* FROM  FotoPerfil f WHERE  f.IdFirebase = p.IdFirebase) fp WHERE m.Estado = 'Match' AND m.IdFirebase = @IdFirebase"
+            query= "SELECT p.Apodo, fp.Value as Foto FROM Matchs m LEFT JOIN Propiedad pr ON m.IdPropiedad = pr.IdPropiedad LEFT JOIN Perfil p ON pr.IdFirebase = p.IdFirebase OUTER APPLY (SELECT TOP 1 f.* FROM  FotoPerfil f WHERE  f.IdFirebase = p.IdFirebase) fp WHERE m.Estado = 'Match' AND m.IdFirebase = @IdFirebase"
         }
         await queryPrepared.query(query).then((response) => {
             result = response.recordset
@@ -176,7 +176,7 @@ async function getMatches(userId, prop) {
         await client.close()
         if(result[0] == null) return null
         const resultado = []
-        result.forEach(item => resultado.push({"nombre": item.Nombre, "foto": item.Foto}))
+        result.forEach(item => resultado.push({"nombre": helper.capitalizeLetters(item.Apodo), "foto": helper.capitalizeLetters(item.Foto)}))
         return resultado
     }catch (err){
         console.dir(err)
@@ -196,7 +196,7 @@ const formatMatchsByUserId = (match) => {
             "ciudad": helper.capitalizeLetters(match.Ciudad),
             "barrio": helper.capitalizeLetters(match.Barrio),
             "foto": match.Foto,
-            "nombre": helper.capitalizeLetters(match.Nombre),
+            "nombre": helper.capitalizeLetters(match.Apodo),
             "edad": match.Edad
         }
 }
@@ -205,7 +205,7 @@ const formatMatchsByPropId = (match) => {
     return { "userId": match.IdFirebase,
             "idPropiedad": match.IdPropiedad,
             "estado": helper.capitalizeFirstLetter(match.Estado),
-            "nombre": helper.capitalizeLetters(match.Nombre),
+            "nombre": helper.capitalizeLetters(match.Apodo),
             "edad": match.Edad,
             "genero": helper.capitalizeFirstLetter(match.Genero),
             "dedicacion": helper.capitalizeFirstLetter(match.Dedicacion),
