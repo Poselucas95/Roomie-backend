@@ -205,14 +205,14 @@ const verifyUser = async (userId) => {
     var dni = await api.getId("fotoDni-" + userId)
     var user = await api.getId("fotoCara-" + userId)
     var response = await api.verifyUsers(dni.data[0].faceId, user.data[0].faceId)
-    await deleteImage(fotoDni, fotoUser);
+    await deleteImage("fotoDni-" + userId, "fotoCara-" + userId);
     return response.data.isIdentical
 }
 
 const deleteImage = async (fotoDni, fotoUser) => {
     const admin = require("firebase-admin");
 admin.initializeApp({
-    storageBucket: "gs://rumi-acdfa.appspot.com"
+    storageBucket: "gs://rumi-acdfa.appspot.com/validate/dni"
 });
 
 const bucket = admin.storage().bucket();
