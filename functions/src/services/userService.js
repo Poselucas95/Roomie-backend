@@ -222,7 +222,7 @@ const formatUser = (user) => {
             "esPropietario": user.EsPropietario,
             "tienePropiedad": user.TienePropiedad,
             "genero": helper.capitalizeFirstLetter(user.Genero),
-            "dedicacion": helper.capitalizeFirstLetter(user.Dedicacion),
+            "dedicacion": user.Dedicacion == "estudio_trabajo" ? "Estudio y trabajo" : helper.capitalizeFirstLetter(user.Dedicacion),
             "fotos": user.Fotos,
             "personalidad": {
                 "activo": user.Activo,
@@ -276,7 +276,7 @@ const formatPreview = (user) => {
     return { "userId": user.IdFirebase,
             "nombre": helper.capitalizeLetters(user.Nombre),
             "nombreEdad": user.Nombre ?  user.Nombre.toUpperCase() + ", " + user.Edad : "",
-            "resumen": helper.capitalizeFirstLetter(user.Genero) + "\n" + helper.capitalizeFirstLetter(user.Dedicacion),
+            "resumen": user.Dedicacion == "estudio_trabajo" ?  helper.capitalizeFirstLetter(user.Genero) + "\n" + "Estudio y trabajo" : helper.capitalizeFirstLetter(user.Genero) + "\n" + helper.capitalizeFirstLetter(user.Dedicacion),
             "fotos": user.Fotos,
             "personalidad": {
                 "activo": user.Activo,

@@ -22,7 +22,7 @@ async function getMatchsByUserId(userId) {
         // Parametros a insertar
         queryPrepared.input('IdFirebase', mssql.NVarChar, userId)
         // Ejecución de la query
-        await queryPrepared.query('SELECT M.*, PR.IdFirebase as idPropietario, PR.AlquilerMensual,PR.TipoHabitacion, PR.TamanoHabitacion, PR.Ciudad , PR.Barrio, fp.Value as Foto, P.Nombre, P.Edad FROM Matchs M  INNER JOIN Propiedad PR ON PR.IdPropiedad = M.IdPropiedad INNER JOIN Perfil P ON P.IdFirebase = PR.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM   FotoPropiedad f WHERE  M.IdPropiedad = f.IdPropiedad) fp WHERE M.IdFirebase =  @IdFirebase').then((response) => {
+        await queryPrepared.query("SELECT M.*, PR.IdFirebase as idPropietario, PR.AlquilerMensual,PR.TipoHabitacion, PR.TamanoHabitacion, PR.Ciudad , PR.Barrio, fp.Value as Foto, P.Nombre, P.Edad FROM Matchs M  INNER JOIN Propiedad PR ON PR.IdPropiedad = M.IdPropiedad INNER JOIN Perfil P ON P.IdFirebase = PR.IdFirebase OUTER APPLY (SELECT TOP 1 * FROM   FotoPropiedad f WHERE  M.IdPropiedad = f.IdPropiedad) fp WHERE M.IdFirebase =  @IdFirebase AND (M.Estado = 'Pendiente' OR M.Estado = 'Match')").then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
@@ -44,7 +44,7 @@ async function getMatchsByPropId(propertyId) {
         // Parametros a insertar
         queryPrepared.input('IdPropiedad', mssql.Int, propertyId)
         // Ejecución de la query
-        await queryPrepared.query('SELECT M.*, P.Nombre, P.Edad, P.Genero, P.Dedicacion, fp.Value as Foto FROM Matchs M  INNER JOIN Perfil P ON P.IdFirebase = M.IdFirebase  OUTER APPLY (SELECT TOP 1 * FROM   FotoPerfil f WHERE  M.IdFirebase = f.IdFirebase) fp WHERE M.IdPropiedad = @IdPropiedad').then((response) => {
+        await queryPrepared.query("SELECT M.*, P.Nombre, P.Edad, P.Genero, P.Dedicacion, fp.Value as Foto FROM Matchs M  INNER JOIN Perfil P ON P.IdFirebase = M.IdFirebase  OUTER APPLY (SELECT TOP 1 * FROM   FotoPerfil f WHERE  M.IdFirebase = f.IdFirebase) fp WHERE M.IdPropiedad = @IdPropiedad AND (M.Estado = 'Pendiente' OR M.Estado = 'Match')").then((response) => {
             result = response.recordset
         })
         // Cerramos la conexión
@@ -118,7 +118,7 @@ async function updateMatch(body) {
         // Injección de parametros
         parameters.forEach(item => queryPrepared.input(item.name, item.sqltype, item.value))
         // Ejecución de la query
-        await queryPrepared.query('UPDATE Matchs SET Estado = @estado  WHERE IdFirebase = @IdFirebase OR IdPropiedad = @IdPropiedad').then((response) => {
+        await queryPrepared.query('UPDATE Matchs SET Estado = @Estado  WHERE IdFirebase = @IdFirebase AND IdPropiedad = @IdPropiedad').then((response) => {
             result = response
         })
         // Cerramos la conexión
