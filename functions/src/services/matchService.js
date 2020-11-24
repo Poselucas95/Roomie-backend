@@ -75,7 +75,7 @@ async function getMatchsPending(propertyId) {
         await client.close()
         if(result[0] === null) return null
         if(result[0].notificacion == 0){
-            return { "notificacion":  'No tienes interesados en la seccion favoritos' }
+            return { "notificacion":  'No tienes nuevos interesados en favoritos' }
         }else if(result[0].notificacion == 1){
             return { "notificacion":  'Tienes 1 interesado en la seccion favoritos' }
         }else{
