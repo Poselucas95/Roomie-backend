@@ -6,7 +6,7 @@ const axios = require("axios");
 const api = axios.create({
   baseURL: "https://brazilsouth.api.cognitive.microsoft.com",
   headers: {
-    "Ocp-Apim-Subscription-Key": "cfe6f6165e2e4f0785d5f58300780130",
+    "Ocp-Apim-Subscription-Key": "ab20148fb64347fbb62ced77353399fd",
   },
   params: {
     detectionModel: "detection_02",
